@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.3.1.RELEASE</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+  <groupId>com.chanus.yuntaoboot</groupId>
+  <artifactId>yuntao-boot</artifactId>
+  <version>0.0.1</version>
+  <packaging>pom</packaging>
+  <name>${project.artifactId}</name>
+  <description>云道 Spring Boot 基础框架整合</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>1.8</java.version>
+    <spring.boot.version>2.3.1.RELEASE</spring.boot.version>
+    <mybatis.plus.spring.boot.version>3.3.2</mybatis.plus.spring.boot.version>
+    <druid.spring.boot.version>1.1.23</druid.spring.boot.version>
+    <yuntao.utils.version>1.1.0</yuntao.utils.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>${mybatis.plus.spring.boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid-spring-boot-starter</artifactId>
+        <version>${druid.spring.boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.chanus</groupId>
+        <artifactId>yuntao-utils-core</artifactId>
+        <version>${yuntao.utils.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.chanus</groupId>
+        <artifactId>yuntao-utils-extra</artifactId>
+        <version>${yuntao.utils.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <modules>
+    <module>yuntao-boot-common</module>
+    <module>yuntao-boot-framework</module>
+  </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
