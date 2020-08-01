@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.chanus.yuntaoboot</groupId>
   <artifactId>yuntao-boot</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>云道 Spring Boot 基础框架整合</description>
@@ -22,6 +22,7 @@
     <spring.boot.version>2.3.1.RELEASE</spring.boot.version>
     <mybatis.plus.spring.boot.version>3.3.2</mybatis.plus.spring.boot.version>
     <druid.spring.boot.version>1.1.23</druid.spring.boot.version>
+    <velocity.version>1.7</velocity.version>
     <yuntao.utils.version>1.1.0</yuntao.utils.version>
   </properties>
 
@@ -36,6 +37,11 @@
         <groupId>com.alibaba</groupId>
         <artifactId>druid-spring-boot-starter</artifactId>
         <version>${druid.spring.boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.velocity</groupId>
+        <artifactId>velocity</artifactId>
+        <version>${velocity.version}</version>
       </dependency>
       <dependency>
         <groupId>com.chanus</groupId>
@@ -69,5 +75,40 @@
       </plugin>
     </plugins>
   </build>
+
+  <repositories>
+    <repository>
+      <id>ali-snapshots</id>
+      <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
+      <id>spring-snapshots</id>
+      <url>http://repo.spring.io/libs-snapshot</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>ali-snapshots</id>
+      <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>spring-snapshots</id>
+      <url>http://repo.spring.io/libs-snapshot</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>
