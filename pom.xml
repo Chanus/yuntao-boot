@@ -23,7 +23,7 @@
     <mybatis.plus.spring.boot.version>3.3.2</mybatis.plus.spring.boot.version>
     <druid.spring.boot.version>1.1.23</druid.spring.boot.version>
     <velocity.version>1.7</velocity.version>
-    <yuntao.utils.version>1.1.0</yuntao.utils.version>
+    <yuntao.utils.version>1.2.0</yuntao.utils.version>
   </properties>
 
   <dependencyManagement>
@@ -44,12 +44,12 @@
         <version>${velocity.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.chanus</groupId>
+        <groupId>com.chanus.utils</groupId>
         <artifactId>yuntao-utils-core</artifactId>
         <version>${yuntao.utils.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.chanus</groupId>
+        <groupId>com.chanus.utils</groupId>
         <artifactId>yuntao-utils-extra</artifactId>
         <version>${yuntao.utils.version}</version>
       </dependency>

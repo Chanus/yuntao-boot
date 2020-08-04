@@ -14,7 +14,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.chanus</groupId>
+      <groupId>com.chanus.utils</groupId>
       <artifactId>yuntao-utils-core</artifactId>
     </dependency>
   </dependencies>
