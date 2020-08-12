@@ -52,4 +52,9 @@ public class Constants {
      * 定时任务状态：暂停
      */
     public final static String STATUS_JOB_PAUSE = "2";
+
+    /**
+     * 文件上传路径
+     */
+    public final static String UPLOAD_PATH = "/upload/";
 }

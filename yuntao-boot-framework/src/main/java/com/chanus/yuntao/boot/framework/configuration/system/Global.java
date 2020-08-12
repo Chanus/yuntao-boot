@@ -17,7 +17,6 @@ package com.chanus.yuntao.boot.framework.configuration.system;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,10 +41,17 @@ public class Global {
      */
     public static String copyright;
 
+    /**
+     * 文件上传路径
+     */
+    public static String profile;
+
     @Autowired
-    public Global(@Value("${yuntao.name}") String name, @Value("${yuntao.version}") String version, @Value("${yuntao.copyright}") String copyright) {
+    public Global(@Value("${yuntao.name}") String name, @Value("${yuntao.version}") String version,
+                  @Value("${yuntao.copyright}") String copyright, @Value("${yuntao.profile}") String profile) {
         Global.name = name;
         Global.version = version;
         Global.copyright = copyright;
+        Global.profile = profile;
     }
 }

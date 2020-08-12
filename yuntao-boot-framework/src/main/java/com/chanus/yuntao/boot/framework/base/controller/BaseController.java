@@ -139,7 +139,7 @@ public class BaseController {
             String realFileName, fileName;
             realFileName = file.getOriginalFilename();
             fileName = RandomUtils.getRandomUniqueNo() + realFileName.substring(realFileName.lastIndexOf("."));
-            File f = new File(getSession().getServletContext().getAttribute("parentRealCtx") + "/" + path, fileName);
+            File f = new File(path, fileName);
             if (!f.exists())
                 f.mkdirs();
             try {
