@@ -65,7 +65,7 @@ public class DruidProperties {
     // 超过时间限制多长，1800秒
     private int removeAbandonedTimeout = 1800;
 
-    private long removeAbandonedTimeoutMillis = 20000L;
+    private long removeAbandonedTimeoutMillis = 30000L;
     // 超过时间限制是否回收
     private boolean removeAbandoned = true;
 
