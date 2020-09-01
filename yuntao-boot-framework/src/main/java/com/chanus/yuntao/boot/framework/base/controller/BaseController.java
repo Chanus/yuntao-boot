@@ -133,12 +133,24 @@ public class BaseController {
      * @return {@link Message}
      */
     protected Message upload(MultipartFile file, String path) {
+        return upload(file, path, RandomUtils.getRandomUniqueNo());
+    }
+
+    /**
+     * 单文件上传
+     *
+     * @param file
+     * @param path     文件保存路径
+     * @param fileName 文件名，不包含后缀
+     * @return {@link Message}
+     */
+    protected Message upload(MultipartFile file, String path, String fileName) {
         Message message = new Message(MsgCodeConstants.SUCCESS, "文件上传成功");
         if (file != null && file.getSize() > 0) {
             // 保存路径
-            String realFileName, fileName;
+            String realFileName;
             realFileName = file.getOriginalFilename();
-            fileName = RandomUtils.getRandomUniqueNo() + realFileName.substring(realFileName.lastIndexOf("."));
+            fileName = fileName + realFileName.substring(realFileName.lastIndexOf("."));
             File f = new File(path, fileName);
             if (!f.exists())
                 f.mkdirs();
