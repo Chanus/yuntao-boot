@@ -148,8 +148,7 @@ public class BaseController {
         Message message = new Message(MsgCodeConstants.SUCCESS, "文件上传成功");
         if (file != null && file.getSize() > 0) {
             // 保存路径
-            String realFileName;
-            realFileName = file.getOriginalFilename();
+            String realFileName = file.getOriginalFilename();
             fileName = fileName + realFileName.substring(realFileName.lastIndexOf("."));
             File f = new File(path, fileName);
             if (!f.exists())
