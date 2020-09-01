@@ -18,6 +18,7 @@ package com.chanus.yuntao.boot.framework.base.controller;
 import com.chanus.yuntao.boot.common.constant.MsgCodeConstants;
 import com.chanus.yuntao.boot.common.pojo.CustomMap;
 import com.chanus.yuntao.boot.common.pojo.Message;
+import com.chanus.yuntao.utils.core.FileUtils;
 import com.chanus.yuntao.utils.core.IOUtils;
 import com.chanus.yuntao.utils.core.RandomUtils;
 import com.chanus.yuntao.utils.core.StringUtils;
@@ -151,8 +152,11 @@ public class BaseController {
             String realFileName = file.getOriginalFilename();
             fileName = fileName + realFileName.substring(realFileName.lastIndexOf("."));
             File f = new File(path, fileName);
-            if (!f.exists())
-                f.mkdirs();
+            if (FileUtils.isFileExist(f))
+                FileUtils.delete(f);
+            else
+                FileUtils.createFile(f);
+
             try {
                 file.transferTo(f);
                 // 返回文件保存的路径，文件真实名称，文件保存的名称
