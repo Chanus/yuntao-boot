@@ -154,7 +154,8 @@ public class BaseController {
             File f = new File(path, fileName);
             if (FileUtils.isFileExist(f))
                 FileUtils.delete(f);
-            else
+
+            if (!f.getParentFile().exists())
                 f.getParentFile().mkdirs();
 
             try {
