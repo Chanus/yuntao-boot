@@ -155,7 +155,7 @@ public class BaseController {
             if (FileUtils.isFileExist(f))
                 FileUtils.delete(f);
             else
-                FileUtils.createFile(f);
+                f.getParentFile().mkdirs();
 
             try {
                 file.transferTo(f);
