@@ -16,10 +16,10 @@
 package com.chanus.yuntao.boot.framework.base.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.chanus.yuntao.boot.common.pojo.CustomMap;
 import com.chanus.yuntao.boot.common.pojo.PageBean;
 import com.chanus.yuntao.boot.framework.base.mapper.BaseMapper;
 import com.chanus.yuntao.boot.framework.base.service.BaseService;
+import com.chanus.yuntao.utils.core.map.CustomMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

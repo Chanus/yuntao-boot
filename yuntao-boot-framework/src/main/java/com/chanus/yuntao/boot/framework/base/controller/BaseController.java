@@ -16,12 +16,12 @@
 package com.chanus.yuntao.boot.framework.base.controller;
 
 import com.chanus.yuntao.boot.common.constant.MsgCodeConstants;
-import com.chanus.yuntao.boot.common.pojo.CustomMap;
 import com.chanus.yuntao.boot.common.pojo.Message;
 import com.chanus.yuntao.utils.core.FileUtils;
 import com.chanus.yuntao.utils.core.IOUtils;
 import com.chanus.yuntao.utils.core.RandomUtils;
 import com.chanus.yuntao.utils.core.StringUtils;
+import com.chanus.yuntao.utils.core.map.CustomMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.WebDataBinder;
@@ -118,7 +118,7 @@ public class BaseController {
             }
             bufferedReader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("读取 HTTP 请求的 body 内容异常", e);
         } finally {
             IOUtils.closeQuietly(bufferedReader);
         }
@@ -129,7 +129,7 @@ public class BaseController {
     /**
      * 单文件上传
      *
-     * @param file
+     * @param file 文件
      * @param path 文件保存路径
      * @return {@link Message}
      */
@@ -140,7 +140,7 @@ public class BaseController {
     /**
      * 单文件上传
      *
-     * @param file
+     * @param file     文件
      * @param path     文件保存路径
      * @param fileName 文件名，不包含后缀
      * @return {@link Message}
@@ -206,24 +206,11 @@ public class BaseController {
             while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
                 bos.write(buff, 0, bytesRead);
             }
+            bos.flush();
         } catch (Exception e) {
             LOGGER.error("文件下载异常", e);
         } finally {
-            if (bos != null) {
-                try {
-                    bos.flush();
-                    bos.close();
-                } catch (IOException e) {
-                    LOGGER.error("关闭输出流异常", e);
-                }
-            }
-            if (bis != null) {
-                try {
-                    bis.close();
-                } catch (IOException e) {
-                    LOGGER.error("关闭输入流异常", e);
-                }
-            }
+            IOUtils.closeQuietly(bos, bis);
         }
     }
 }

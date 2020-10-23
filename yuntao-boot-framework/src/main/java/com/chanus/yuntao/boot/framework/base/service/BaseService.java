@@ -16,10 +16,10 @@
 package com.chanus.yuntao.boot.framework.base.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.chanus.yuntao.boot.common.pojo.CustomMap;
 import com.chanus.yuntao.boot.common.pojo.Message;
 import com.chanus.yuntao.boot.common.pojo.PageBean;
 import com.chanus.yuntao.utils.core.CollectionUtils;
+import com.chanus.yuntao.utils.core.map.CustomMap;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -108,7 +108,7 @@ public interface BaseService<T> extends IService<T> {
      * @return 操作结果信息
      */
     default Message delete(Collection<? extends Serializable> pks) {
-        if (!CollectionUtils.isEmpty(pks))
+        if (CollectionUtils.isNotEmpty(pks))
             this.removeByIds(pks);
         return Message.deleteSuccess();
     }
