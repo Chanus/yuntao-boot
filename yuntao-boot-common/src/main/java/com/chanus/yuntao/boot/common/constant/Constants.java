@@ -31,6 +31,7 @@ public class Constants {
      * 状态：是
      */
     public final static String STATUS_YES = "1";
+
     /**
      * 通用成功标识
      */
@@ -39,6 +40,7 @@ public class Constants {
      * 通用失败标识
      */
     public static final String FAIL = "1";
+
     /**
      * 定时任务状态：停止
      */
@@ -47,7 +49,6 @@ public class Constants {
      * 定时任务状态：启动
      */
     public final static String STATUS_JOB_START = "1";
-
     /**
      * 定时任务状态：暂停
      */

@@ -31,7 +31,7 @@ public class LoginUser implements Serializable {
     /**
      * 登录用户本地线程
      */
-    public static ThreadLocal<LoginUser> loginUserThread = new ThreadLocal<LoginUser>();
+    public static ThreadLocal<LoginUser> loginUserThread = new ThreadLocal<>();
 
     /**
      * 用户账号

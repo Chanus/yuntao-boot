@@ -26,13 +26,13 @@ import java.util.Map;
  * @since 0.0.2
  */
 public class SessionSave {
-    private static Map<String, String> SessionIdSave = new HashMap<>();
+    private static Map<String, String> sessionIdSave = new HashMap<>();
 
     public static Map<String, String> getSessionIdSave() {
-        return SessionIdSave;
+        return sessionIdSave;
     }
 
     public static void setSessionIdSave(Map<String, String> sessionIdSave) {
-        SessionIdSave = sessionIdSave;
+        SessionSave.sessionIdSave = sessionIdSave;
     }
 }
