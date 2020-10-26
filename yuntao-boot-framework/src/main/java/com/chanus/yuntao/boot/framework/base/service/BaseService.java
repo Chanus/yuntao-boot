@@ -16,9 +16,9 @@
 package com.chanus.yuntao.boot.framework.base.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.chanus.yuntao.boot.common.pojo.Message;
-import com.chanus.yuntao.boot.common.pojo.PageBean;
 import com.chanus.yuntao.utils.core.CollectionUtils;
+import com.chanus.yuntao.utils.core.lang.Message;
+import com.chanus.yuntao.utils.core.lang.Page;
 import com.chanus.yuntao.utils.core.map.CustomMap;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -157,5 +157,5 @@ public interface BaseService<T> extends IService<T> {
      * @param params 参数集合
      * @return 指定页的数据信息
      */
-    PageBean listPagination(CustomMap params);
+    Page<T> listPagination(CustomMap params);
 }

@@ -15,12 +15,11 @@
  */
 package com.chanus.yuntao.boot.framework.base.controller;
 
-import com.chanus.yuntao.boot.common.constant.MsgCodeConstants;
-import com.chanus.yuntao.boot.common.pojo.Message;
 import com.chanus.yuntao.utils.core.FileUtils;
 import com.chanus.yuntao.utils.core.IOUtils;
 import com.chanus.yuntao.utils.core.RandomUtils;
 import com.chanus.yuntao.utils.core.StringUtils;
+import com.chanus.yuntao.utils.core.lang.Message;
 import com.chanus.yuntao.utils.core.map.CustomMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,7 +145,7 @@ public class BaseController {
      * @return {@link Message}
      */
     protected Message upload(MultipartFile file, String path, String fileName) {
-        Message message = new Message(MsgCodeConstants.SUCCESS, "文件上传成功");
+        Message message = new Message(Message.SUCCESS, "文件上传成功");
         if (file != null && file.getSize() > 0) {
             // 保存路径
             String realFileName = file.getOriginalFilename();
@@ -163,7 +162,7 @@ public class BaseController {
                 // 返回文件保存的路径，文件真实名称，文件保存的名称
                 message.setMap(CustomMap.create().putNext("filePath", path).putNext("realFileName", realFileName).putNext("fileName", fileName));
             } catch (Exception e) {// 图片上传失败
-                return Message.init(MsgCodeConstants.FAIL, "文件上传失败");
+                return Message.fail("文件上传失败");
             }
         }
 
