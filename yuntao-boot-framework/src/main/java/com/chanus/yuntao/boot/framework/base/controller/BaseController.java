@@ -145,7 +145,7 @@ public class BaseController {
      * @return {@link Message}
      */
     protected Message upload(MultipartFile file, String path, String fileName) {
-        Message message = new Message(Message.SUCCESS, "文件上传成功");
+        Message message = Message.success("文件上传成功");
         if (file != null && file.getSize() > 0) {
             // 保存路径
             String realFileName = file.getOriginalFilename();

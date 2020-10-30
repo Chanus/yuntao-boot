@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.chanus.yuntaoboot</groupId>
   <artifactId>yuntao-boot</artifactId>
-  <version>0.2.0</version>
+  <version>0.2.1</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>云道 Spring Boot 基础框架整合</description>
@@ -23,7 +23,7 @@
     <mybatis.plus.spring.boot.version>3.4.0</mybatis.plus.spring.boot.version>
     <druid.spring.boot.version>1.2.1</druid.spring.boot.version>
     <velocity.version>1.7</velocity.version>
-    <yuntao.utils.version>1.4.2</yuntao.utils.version>
+    <yuntao.utils.version>1.4.3</yuntao.utils.version>
   </properties>
 
   <dependencyManagement>
