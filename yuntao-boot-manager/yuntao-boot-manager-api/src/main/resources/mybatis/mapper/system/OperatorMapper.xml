@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chanus.yuntao.boot.manager.mapper.OperatorMapper">
+  <insert id="insert" parameterType="com.chanus.yuntao.boot.manager.model.Operator">
+    insert into sys_operator
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="operatorNo != null">
+        operator_no,
+      </if>
+      <if test="operatorName != null">
+        operator_name,
+      </if>
+      <if test="operatorPassword != null">
+        operator_password,
+      </if>
+      <if test="operatorRoleCode != null">
+        operator_role_code,
+      </if>
+      <if test="masterNo != null">
+        master_no,
+      </if>
+      <if test="masterRoleCode != null">
+        master_role_code,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="headImage != null">
+        head_image,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="validStatus != null">
+        valid_status,
+      </if>
+      <if test="superior != null">
+        superior,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="operatorNo != null">
+        #{operatorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorName != null">
+        #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorPassword != null">
+        #{operatorPassword,jdbcType=CHAR},
+      </if>
+      <if test="operatorRoleCode != null">
+        #{operatorRoleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="masterNo != null">
+        #{masterNo,jdbcType=VARCHAR},
+      </if>
+      <if test="masterRoleCode != null">
+        #{masterRoleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        HEX(AES_ENCRYPT(#{email,jdbcType=VARCHAR},#{aesEmailKey,jdbcType=VARCHAR})),
+      </if>
+      <if test="tel != null">
+        HEX(AES_ENCRYPT(#{tel,jdbcType=VARCHAR},#{aesPhoneKey,jdbcType=VARCHAR})),
+      </if>
+      <if test="headImage != null">
+        #{headImage,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="validStatus != null">
+        #{validStatus,jdbcType=CHAR},
+      </if>
+      <if test="superior != null">
+        #{superior,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateById" parameterType="com.chanus.yuntao.boot.manager.model.Operator">
+    update sys_operator
+    <set>
+      <if test="operatorNo != null">
+        operator_no = #{operatorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorName != null">
+        operator_name = #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorPassword != null">
+        operator_password = #{operatorPassword,jdbcType=CHAR},
+      </if>
+      <if test="operatorRoleCode != null">
+        operator_role_code = #{operatorRoleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="masterNo != null">
+        master_no = #{masterNo,jdbcType=VARCHAR},
+      </if>
+      <if test="masterRoleCode != null">
+        master_role_code = #{masterRoleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = HEX(AES_ENCRYPT(#{email,jdbcType=VARCHAR},#{aesEmailKey,jdbcType=VARCHAR})),
+      </if>
+      <if test="tel != null">
+        tel = HEX(AES_ENCRYPT(#{tel,jdbcType=VARCHAR},#{aesPhoneKey,jdbcType=VARCHAR})),
+      </if>
+      <if test="headImage != null">
+        head_image = #{headImage,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="validStatus != null">
+        valid_status = #{validStatus,jdbcType=CHAR},
+      </if>
+      <if test="superior != null">
+        superior = #{superior,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getById" resultType="com.chanus.yuntao.boot.manager.model.Operator">
+    select
+    id, operator_no, operator_name, operator_role_code, master_no, master_role_code, AES_DECRYPT(UNHEX(email),#{aesEmailKey,jdbcType=VARCHAR}) email,
+    AES_DECRYPT(UNHEX(tel),#{aesPhoneKey,jdbcType=VARCHAR}) tel, head_image, remark, valid_status
+    from sys_operator
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getByOperatorNo" resultType="com.chanus.yuntao.boot.manager.model.Operator">
+    select
+    sys_operator.id, operator_no, operator_name, operator_role_code, master_no, master_role_code, AES_DECRYPT(UNHEX(email),#{aesEmailKey,jdbcType=VARCHAR}) email,
+    AES_DECRYPT(UNHEX(tel),#{aesPhoneKey,jdbcType=VARCHAR}) tel, head_image, sys_operator.remark, sys_operator.valid_status, sys_operator.gmt_create, role_name
+    from sys_operator, sys_role
+    where operator_role_code = role_code and operator_no = #{operatorNo,jdbcType=VARCHAR}
+  </select>
+
+  <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from sys_operator
+    <where>
+      and operator_role_code &lt;&gt; '1'
+      <if test="operatorNo != null">
+        and operator_no = #{operatorNo,jdbcType=VARCHAR}
+      </if>
+      <if test="operatorRoleCode != null">
+        and operator_role_code = #{operatorRoleCode,jdbcType=VARCHAR}
+      </if>
+      <if test="validStatus != null">
+        and valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+      <if test="loginRoleCode != null">
+        and FIND_IN_SET(#{loginRoleCode,jdbcType=VARCHAR}, superior)
+      </if>
+    </where>
+  </select>
+  
+  <select id="list" parameterType="java.util.Map" resultType="com.chanus.yuntao.boot.manager.model.Operator">
+    select
+    sys_operator.id, operator_no, operator_name, operator_role_code, AES_DECRYPT(UNHEX(email),#{aesEmailKey,jdbcType=VARCHAR}) email,
+    AES_DECRYPT(UNHEX(tel),#{aesPhoneKey,jdbcType=VARCHAR}) tel, head_image, sys_operator.remark, sys_operator.valid_status, role_name
+    from sys_operator, sys_role
+    <where>
+      operator_role_code = role_code and operator_role_code &lt;&gt; '1'
+      <if test="operatorNo != null">
+        and operator_no = #{operatorNo,jdbcType=VARCHAR}
+      </if>
+      <if test="operatorRoleCode != null">
+        and operator_role_code = #{operatorRoleCode,jdbcType=VARCHAR}
+      </if>
+      <if test="validStatus != null">
+        and sys_operator.valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+      <if test="loginRoleCode != null">
+        and FIND_IN_SET(#{loginRoleCode,jdbcType=VARCHAR}, sys_operator.superior)
+      </if>
+    </where>
+    order by operator_role_code asc
+    <if test="pagination == true">
+      limit #{start,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="countSub" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from sys_operator
+    <where>
+      and operator_role_code = '1'
+      <if test='loginRoleCode != "0"'>
+        and master_no = #{loginNo,jdbcType=VARCHAR}
+      </if>
+      <if test="subNo != null">
+        and operator_no = #{subNo,jdbcType=VARCHAR}
+      </if>
+      <if test="masterNo != null">
+        and master_no = #{masterNo,jdbcType=VARCHAR}
+      </if>
+      <if test="masterRoleCode != null">
+        and master_role_code = #{masterRoleCode,jdbcType=VARCHAR}
+      </if>
+      <if test="validStatus != null">
+        and valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="listSub" parameterType="java.util.Map" resultType="com.chanus.yuntao.boot.manager.model.Operator">
+    select
+    sys_operator.id, operator_no, operator_name, master_no, master_role_code, AES_DECRYPT(UNHEX(email),#{aesEmailKey,jdbcType=VARCHAR}) email,
+    AES_DECRYPT(UNHEX(tel),#{aesPhoneKey,jdbcType=VARCHAR}) tel, head_image, sys_operator.remark, sys_operator.valid_status, role_name
+    from sys_operator, sys_role
+    <where>
+      master_role_code = role_code and operator_role_code = '1'
+      <if test='loginRoleCode != "0"'>
+        and master_no = #{loginNo,jdbcType=VARCHAR}
+      </if>
+      <if test="subNo != null">
+        and operator_no = #{subNo,jdbcType=VARCHAR}
+      </if>
+      <if test="masterNo != null">
+        and master_no = #{masterNo,jdbcType=VARCHAR}
+      </if>
+      <if test="masterRoleCode != null">
+        and master_role_code = #{masterRoleCode,jdbcType=VARCHAR}
+      </if>
+      <if test="validStatus != null">
+        and sys_operator.valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+    </where>
+    <if test="pagination == true">
+      limit #{start,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

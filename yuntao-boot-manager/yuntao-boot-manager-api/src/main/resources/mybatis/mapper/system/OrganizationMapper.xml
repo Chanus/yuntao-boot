@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chanus.yuntao.boot.manager.mapper.OrganizationMapper">
+  <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from sys_organization
+    <where>
+      <if test="orgParentId != null">
+        and org_parent_id = #{orgParentId,jdbcType=INTEGER}
+      </if>
+      <if test="validStatus != null">
+        and valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+    </where>
+  </select>
+  
+  <select id="list" parameterType="java.util.Map" resultType="com.chanus.yuntao.boot.manager.model.Organization">
+    select
+    org_id, org_code, org_name, org_parent_id, org_short_name, org_long_name, org_location, org_phone,
+    valid_status, priority, gmt_create, gmt_modified
+    from sys_organization
+    <where>
+      <if test="orgParentId != null">
+        and org_parent_id = #{orgParentId,jdbcType=INTEGER}
+      </if>
+      <if test="validStatus != null">
+        and valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+    </where>
+    order by priority asc
+    <if test="pagination == true">
+      limit #{start,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

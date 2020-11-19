@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body>
+    <div class="pd-5">
+      <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+          <label class="layui-form-label">操作账号</label>
+          <div class="layui-input-block">
+            <input type="text" name="operateNo" readonly th:value="${log.operateNo }" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">请求地址</label>
+          <div class="layui-input-block">
+            <input type="text" name="operateUrl" readonly th:value="${log.operateUrl }" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">方法描述</label>
+          <div class="layui-input-block">
+            <input type="text" name="operateMethod" readonly th:value="${log.operateMethod }" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div th:if="${log.operateType } eq 'EXCEPTION'" class="layui-form-item">
+          <label class="layui-form-label">异常代码</label>
+          <div class="layui-input-block">
+            <input type="text" name="operateTypeDesc" readonly th:value="${log.operateTypeDesc }" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">内容</label>
+          <div class="layui-input-block">
+            <textarea name="content" th:text="${log.operateContent }" class="layui-textarea" style="height: 300px;" disabled="disabled"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

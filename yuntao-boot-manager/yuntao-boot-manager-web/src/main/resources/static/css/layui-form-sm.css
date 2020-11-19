@@ -1,0 +1,94 @@
+/**
+ 针对layui表单偏大的情况，做一个小号表单
+ @Name: layui-form-sm
+ @Author: Chanus
+ */
+
+/** 表单 **/
+.layui-form-sm .layui-input, .layui-form-sm .layui-textarea, .layui-form-sm .layui-select{height: 28px; line-height: 28px\9; font-size: 12px;}
+.layui-form-sm .layui-input, .layui-form-sm .layui-textarea{padding-left: 2px;}
+.layui-form-sm .layui-textarea{position: relative; min-height: 80px; height: auto; line-height: 16px; padding: 3px 5px;}
+
+.layui-form-sm .layui-form-item{margin-bottom: 2px; clear: both; *zoom: 1;}
+.layui-form-sm .layui-form-label{position: relative; padding: 8px 5px;  width: 90px; font-size: 12px; line-height: 12px;}
+.layui-form-sm .layui-form-label-col{padding: 8px 0; line-height: 12px;}
+.layui-form-sm .layui-form-item .layui-inline{margin-bottom: 2px; margin-right: 5px;}
+.layui-form-sm .layui-input-block{margin-left: 100px; min-height: 28px;}
+.layui-form-sm .layui-form-item .layui-input-inline{float: left; width: 150px; margin-right: 5px;}
+
+/* 分割块 */
+.layui-form-sm .layui-form-mid{position: relative; padding: 8px 0 !important; line-height: 12px; font-size: 12px;}
+
+/* 下拉选择 */
+.layui-form-sm .layui-form-select .layui-input{padding-right: 30px; cursor: pointer;}
+.layui-form-sm .layui-form-select dl{top: 28px; padding: 0; max-height: 250px; font-size: 12px;}
+.layui-form-sm .layui-form-select dl dt, .layui-form-sm .layui-form-select dl dd{padding: 0 5px; line-height: 24px;}
+.layui-form-sm .layui-form-select dl dt{font-size: 12px; color: #999;}
+.layui-form-sm .layui-form-select .layui-select-group dd{padding-left: 20px;}
+.layui-form-sm .layui-form-select dl dd.layui-select-tips{padding-left: 5px !important; color: #999;}
+.layui-form-sm .layui-form-selectup dl{top: auto; bottom: 28px;}
+
+/* 复选框 */
+.layui-form-sm .layui-form-checkbox{position: relative; display: inline-block; vertical-align: middle; height: 28px; line-height: 28px; margin-right: 5px; padding-right: 28px; background-color: #fff; cursor: pointer; font-size: 0;  -webkit-transition: .1s linear; transition: .1s linear; box-sizing: border-box;}
+.layui-form-sm .layui-form-checkbox:hover{}
+.layui-form-sm .layui-form-checkbox *{display: inline-block; vertical-align: middle;}
+.layui-form-sm .layui-form-checkbox span{padding: 0 5px; height: 100%; font-size: 12px; border-radius: 2px 0 0 2px; background-color: #d2d2d2; color: #fff; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
+.layui-form-sm .layui-form-checkbox:hover span{background-color: #c2c2c2;}
+.layui-form-sm .layui-form-checkbox i{position: absolute; right: 0; top: 0; width: 28px; height: 26px; border: 1px solid #d2d2d2; border-left: none; border-radius: 0 2px 2px 0; color: #fff; font-size: 12px; text-align: center;}
+.layui-form-sm .layui-form-checkbox:hover i{border-color: #c2c2c2; color: #c2c2c2;}
+.layui-form-sm .layui-form-checked, .layui-form-sm .layui-form-checked:hover{border-color: #5FB878;}
+.layui-form-sm .layui-form-checked span, .layui-form-sm .layui-form-checked:hover span{background-color: #5FB878;}
+.layui-form-sm .layui-form-checked i, .layui-form-sm .layui-form-checked:hover i{color: #5FB878;}
+.layui-form-sm .layui-form-item .layui-form-checkbox{margin-top: 0;}
+
+/* 复选框-原始风格 */
+.layui-form-sm .layui-form-checkbox[lay-skin="primary"]{height: auto!important; line-height: normal!important; min-width: 14px; min-height: 14px; border: none!important; margin-right: 0; padding-left: 20px; padding-right: 0; background: none;}
+.layui-form-sm .layui-form-checkbox[lay-skin="primary"] span{padding: 1px 5px 1px 0; line-height: 14px; background: none; color: #666;}
+.layui-form-sm .layui-form-checkbox[lay-skin="primary"] i{right: auto; left: 0; width: 14px; height: 14px; line-height: 14px; border: 1px solid #d2d2d2; font-size: 12px; border-radius: 2px; background-color: #fff; -webkit-transition: .1s linear; transition: .1s linear;}
+.layui-form-sm .layui-form-checkbox[lay-skin="primary"]:hover i{border-color: #5FB878; color: #fff;}
+.layui-form-sm .layui-form-checked[lay-skin="primary"] i{border-color: #5FB878 !important; background-color: #5FB878; color: #fff;}
+.layui-form-sm .layui-checkbox-disbaled[lay-skin="primary"] span{background: none!important; color: #c2c2c2;}
+.layui-form-sm .layui-checkbox-disbaled[lay-skin="primary"]:hover i{border-color: #d2d2d2;}
+.layui-form-sm .layui-form-item .layui-form-checkbox[lay-skin="primary"]{margin-top: 6px;}
+
+/* 复选框-开关风格 */
+.layui-form-sm .layui-form-switch{position: relative; display: inline-block; vertical-align: middle; height: 22px; line-height: 22px; min-width: 35px; padding: 0 5px; margin-top: 2px; border: 1px solid #d2d2d2; border-radius: 20px; cursor: pointer; background-color: #fff; -webkit-transition: .1s linear; transition: .1s linear;}
+.layui-form-sm .layui-form-switch i{position: absolute; left: 5px; top: 3px; width: 16px; height: 16px; border-radius: 20px; background-color: #d2d2d2; -webkit-transition: .1s linear; transition: .1s linear;}
+.layui-form-sm .layui-form-switch em{position: relative; top: 0; width: 25px; margin-left: 21px; padding: 0!important; text-align: center!important; color: #999!important; font-style: normal!important; font-size: 12px;}
+.layui-form-sm .layui-form-onswitch{border-color: #5FB878; background-color: #5FB878;}
+.layui-form-sm .layui-form-onswitch i{left: 100%; margin-left: -21px; background-color: #fff;}
+.layui-form-sm .layui-form-onswitch em{margin-left: 5px; margin-right: 21px; color: #fff!important;}
+
+
+/* 单选框 */
+.layui-form-sm .layui-form-radio{display: inline-block; vertical-align: middle; line-height: 28px; margin: 0; padding-right: 10px; cursor: pointer; font-size: 0;}
+.layui-form-sm .layui-form-radio *{display: inline-block; vertical-align: middle; font-size: 12px;}
+.layui-form-sm .layui-form-radio>i{margin-right: 8px; font-size: 16px; color: #c2c2c2;}
+.layui-form-sm .layui-form-radioed>i,.layui-form-radio>i:hover{color: #5FB878;}
+.layui-form-sm .layui-radio-disbaled>i{color: #e2e2e2 !important;}
+
+/* 表单方框风格 */
+.layui-form-sm .layui-form-pane .layui-form-label{width: 90px; padding: 8px 5px; height: 28px; line-height: 12px;}
+.layui-form-sm .layui-form-pane .layui-input-inline{margin-left: -1px;}
+.layui-form-sm .layui-form-pane .layui-input-block{margin-left: 90px; left: -1px;}
+.layui-form-sm .layui-form-pane .layui-input{border-radius: 0 2px 2px 0;}
+.layui-form-sm .layui-form-pane .layui-form-text .layui-form-label{float: none; width: 100%; border-radius: 2px; box-sizing: border-box; text-align: left;}
+.layui-form-sm .layui-form-pane .layui-form-text .layui-input-inline{display: block; margin: 0; top: -1px; clear: both;}
+.layui-form-sm .layui-form-pane .layui-form-text .layui-input-block{margin: 0; left: 0; top: -1px;}
+.layui-form-sm .layui-form-pane .layui-form-text .layui-textarea{min-height: 80px; border-radius: 0 0 2px 2px;}
+.layui-form-sm .layui-form-pane .layui-form-checkbox{margin: 4px 0 4px 5px;}
+.layui-form-sm .layui-form-pane .layui-form-switch,
+.layui-form-sm .layui-form-pane .layui-form-radio{margin-top: 2px; margin-left: 5px; }
+.layui-form-sm .layui-form-pane .layui-form-item[pane]{position: relative; border-width: 1px; border-style: solid;}
+.layui-form-sm .layui-form-pane .layui-form-item[pane] .layui-form-label{position: absolute; left: 0; top: 0; height: 100%; border-width: 0px; border-right-width: 1px;}
+.layui-form-sm .layui-form-pane .layui-form-item[pane] .layui-input-inline{margin-left: 90px;}
+
+/** 表单响应式 **/
+@media screen and (max-width: 450px) {
+    .layui-form-sm .layui-form-item .layui-form-label{text-overflow: ellipsis; overflow: hidden; white-space: nowrap;}
+    .layui-form-sm .layui-form-item .layui-inline{display: block; margin-right: 0; margin-bottom: 2px; clear: both;}
+    .layui-form-sm .layui-form-item .layui-inline:after{content:'\20'; clear:both; display:block; height:0;}
+    .layui-form-sm .layui-form-item .layui-input-inline{display: block; float: none; left: -3px; width: auto; margin: 0 0 2px 92px; }
+    .layui-form-sm .layui-form-item .layui-input-inline+.layui-form-mid{margin-left: 90px; top: -5px; padding: 0;}
+    .layui-form-sm .layui-form-item .layui-form-checkbox{margin-right: 5px; margin-bottom: 5px;}
+}

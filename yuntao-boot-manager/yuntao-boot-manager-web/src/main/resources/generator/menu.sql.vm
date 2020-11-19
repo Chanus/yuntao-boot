@@ -1,0 +1,18 @@
+-- 菜单权限
+INSERT INTO `sys_module_power`(`module_code`, `power_item`, `alias_name`) VALUES ('${moduleCode}', 'VIEW', '浏览');
+INSERT INTO `sys_module_power`(`module_code`, `power_item`, `alias_name`) VALUES ('${moduleCode}', 'ADD', '添加');
+INSERT INTO `sys_module_power`(`module_code`, `power_item`, `alias_name`) VALUES ('${moduleCode}', 'DELETE', '删除');
+INSERT INTO `sys_module_power`(`module_code`, `power_item`, `alias_name`) VALUES ('${moduleCode}', 'UPDATE', '编辑');
+
+-- 菜单权限ID
+set @viewMpId = (select mp_id from sys_module_power where module_code = '${moduleCode}' and power_item = 'VIEW');
+set @addMpId = (select mp_id from sys_module_power where module_code = '${moduleCode}' and power_item = 'ADD');
+set @deleteMpId = (select mp_id from sys_module_power where module_code = '${moduleCode}' and power_item = 'DELETE');
+set @updateMpId = (select mp_id from sys_module_power where module_code = '${moduleCode}' and power_item = 'UPDATE');
+
+-- 菜单权限对应请求URL
+INSERT INTO `sys_module_power_method`(`mp_id`, `class_name`, `url`) VALUES (@viewMpId, '${controllerPackage}.controller.${className}Controller', '/${pathName}/main');
+INSERT INTO `sys_module_power_method`(`mp_id`, `class_name`, `url`) VALUES (@viewMpId, '${controllerPackage}.controller.${className}Controller', '/${pathName}/list');
+INSERT INTO `sys_module_power_method`(`mp_id`, `class_name`, `url`) VALUES (@addMpId, '${controllerPackage}.controller.${className}Controller', '/${pathName}/add');
+INSERT INTO `sys_module_power_method`(`mp_id`, `class_name`, `url`) VALUES (@deleteMpId, '${controllerPackage}.controller.${className}Controller', '/${pathName}/delete');
+INSERT INTO `sys_module_power_method`(`mp_id`, `class_name`, `url`) VALUES (@updateMpId, '${controllerPackage}.controller.${className}Controller', '/${pathName}/update');

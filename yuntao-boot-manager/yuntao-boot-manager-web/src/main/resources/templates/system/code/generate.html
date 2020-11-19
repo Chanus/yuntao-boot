@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body>
+    <div class="pd-5">
+      <form class="layui-form layui-form-pane">
+        <input type="hidden" name="tableSchema" th:value="${tableSchema }" class="layui-input" autocomplete="off">
+        <div class="layui-form-item">
+          <label class="layui-form-label">表名</label>
+          <div class="layui-input-block">
+            <input type="text" name="tableName" readonly th:value="${tableName }" class="layui-input layui-disabled" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">作者<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="author" required lay-verify="required" th:value="${author }" placeholder="请输入作者名称" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">版本号<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="since" required lay-verify="required" th:value="${since }" placeholder="请输入代码版本号" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item" pane>
+          <label class="layui-form-label">项目结构<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="radio" name="multi" lay-verify="mustradio" value="1" title="多模块" th:checked="${multi } eq '1'">
+            <input type="radio" name="multi" value="0" title="单模块" th:checked="${multi eq null} or ${multi } eq '0'">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">服务类包名<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="serverPackage" required lay-verify="required" th:value="${serverPackage }" placeholder="请输入服务类代码包名" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">控制器包名<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="controllerPackage" required lay-verify="required" th:value="${controllerPackage }" placeholder="请输入控制器代码包名" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">表前缀</label>
+          <div class="layui-input-block">
+            <input type="text" name="tablePrefix" th:value="${tablePrefix }" placeholder="请输入表前缀" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item" pane>
+          <label class="layui-form-label">去除表前缀</label>
+          <div class="layui-input-block">
+            <input type="radio" name="autoRemovePrefix" lay-verify="mustradio" value="1" title="自动去除" th:checked="${autoRemovePrefix } eq '1'">
+            <input type="radio" name="autoRemovePrefix" value="0" title="不自动去除" th:checked="${autoRemovePrefix eq null } or ${autoRemovePrefix } eq '0'">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">URL标识</label>
+          <div class="layui-input-block">
+            <input type="text" name="pathName" placeholder="请输入请求URL标识" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">模块ID</label>
+          <div class="layui-input-block">
+            <input type="text" name="moduleId" placeholder="请输入模块ID" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item" pane>
+          <label class="layui-form-label">重写SQL</label>
+          <div class="layui-input-block">
+            <input type="checkbox" name="overrideInsert" value="1" lay-skin="primary" title="insert">
+            <input type="checkbox" name="overrideUpdate" value="1" lay-skin="primary" title="update">
+            <input type="checkbox" name="overrideDelete" value="1" lay-skin="primary" title="delete">
+          </div>
+        </div>
+        <div class="layui-form-item text-c">
+          <div class="layui-inline">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="generate">生成代码</button>
+            <span class="layui-btn layui-btn-primary" id="cancel">取消</span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <th:block th:include="public :: footer"/>
+    <script type="text/javascript" src="../static/js/system/code-generation.js?v=1.0.0.1" th:src="@{/js/system/code-generation.js}"></script>
+  </body>
+</html>

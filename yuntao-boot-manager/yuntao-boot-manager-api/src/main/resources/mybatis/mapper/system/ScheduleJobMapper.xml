@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chanus.yuntao.boot.manager.mapper.ScheduleJobMapper">
+  <delete id="deleteBatchIds" parameterType="java.lang.Integer">
+    delete sys_schedule_job, sys_schedule_trigger from sys_schedule_job
+    left join sys_schedule_trigger on sys_schedule_job.id = sys_schedule_trigger.job_id
+    <where>
+      <choose>
+        <when test="coll == null or coll.size() == 0">
+          and 1 &lt;&gt; 1
+        </when>
+        <when test="coll.size() == 1">
+          and sys_schedule_job.id = <foreach collection="coll" item="id">#{id,jdbcType=INTEGER}</foreach>
+        </when>
+        <otherwise>
+          and sys_schedule_job.id in <foreach collection="coll" item="id" open="(" separator="," close=")">#{id,jdbcType=INTEGER}</foreach>
+        </otherwise>
+      </choose>
+    </where>
+  </delete>
+
+  <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from sys_schedule_job
+    <where>
+      <if test="validStatus != null">
+        valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+    </where>
+  </select>
+  
+  <select id="list" parameterType="java.util.Map" resultType="com.chanus.yuntao.boot.manager.model.ScheduleJob">
+    select
+    id, job_name, job_group, job_class_name, job_data, remark, valid_status, gmt_create, gmt_modified
+    from sys_schedule_job
+    <where>
+      <if test="validStatus != null">
+        valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+    </where>
+    <if test="pagination == true">
+      limit #{start,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <resultMap id="ScheduleJobMap" type="com.chanus.yuntao.boot.manager.model.ScheduleJob">
+    <id column="schedule_job_id" jdbcType="INTEGER" property="id" />
+    <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+    <result column="job_group" jdbcType="VARCHAR" property="jobGroup" />
+    <result column="job_class_name" jdbcType="VARCHAR" property="jobClassName" />
+    <result column="job_data" jdbcType="VARCHAR" property="jobData" />
+    <result column="job_remark" jdbcType="VARCHAR" property="remark" />
+    <result column="job_valid_status" jdbcType="CHAR" property="validStatus" />
+    <collection property="scheduleTriggers" ofType="com.chanus.yuntao.boot.manager.model.ScheduleTrigger">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="job_id" jdbcType="INTEGER" property="jobId" />
+      <result column="trigger_name" jdbcType="VARCHAR" property="triggerName" />
+      <result column="trigger_group" jdbcType="VARCHAR" property="triggerGroup" />
+      <result column="trigger_cron" jdbcType="VARCHAR" property="triggerCron" />
+      <result column="trigger_start_time" jdbcType="TIMESTAMP" property="triggerStartTime" />
+      <result column="trigger_end_time" jdbcType="TIMESTAMP" property="triggerEndTime" />
+      <result column="trigger_data" jdbcType="VARCHAR" property="triggerData" />
+      <result column="priority" jdbcType="INTEGER" property="priority" />
+      <result column="remark" jdbcType="VARCHAR" property="remark" />
+    </collection>
+  </resultMap>
+
+  <select id="getScheduleJob" parameterType="java.lang.Integer" resultMap="ScheduleJobMap">
+    select
+    sys_schedule_job.id schedule_job_id, job_name, job_group, job_class_name, job_data, sys_schedule_job.remark job_remark,
+    sys_schedule_job.valid_status job_valid_status, sys_schedule_trigger.id, job_id, trigger_name, trigger_group, trigger_cron,
+    trigger_start_time, trigger_end_time, trigger_data, priority, sys_schedule_trigger.remark
+    from sys_schedule_job
+    left join sys_schedule_trigger on sys_schedule_job.id = sys_schedule_trigger.job_id and sys_schedule_trigger.valid_status = '1'
+    where sys_schedule_job.id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="listScheduleJob" resultMap="ScheduleJobMap">
+    select
+    sys_schedule_job.id schedule_job_id, job_name, job_group, job_class_name, job_data, sys_schedule_job.remark job_remark,
+    sys_schedule_job.valid_status job_valid_status, sys_schedule_trigger.id, job_id, trigger_name, trigger_group, trigger_cron,
+    trigger_start_time, trigger_end_time, trigger_data, priority, sys_schedule_trigger.remark
+    from sys_schedule_job
+    inner join sys_schedule_trigger on sys_schedule_job.id = sys_schedule_trigger.job_id
+    where sys_schedule_job.valid_status = '1' and sys_schedule_trigger.valid_status = '1'
+  </select>
+</mapper>

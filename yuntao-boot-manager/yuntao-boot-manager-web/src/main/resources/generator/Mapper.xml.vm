@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${serverPackage}.mapper.${className}Mapper">
+#if($overrideDelete == '1')
+  <delete id="deleteBatchIds" parameterType="java.lang.${pk.attributeType}">
+    delete from ${tableName}
+    <where>
+      <choose>
+        <when test="coll == null or coll.size() == 0">
+          1 &lt;&gt; 1
+        </when>
+        <when test="coll.size() == 1">
+          ${pk.columnName} = <foreach collection="coll" item="id">#{id,jdbcType=${pk.jdbcType}}</foreach>
+        </when>
+        <otherwise>
+          ${pk.columnName} in <foreach collection="coll" item="id" open="(" separator="," close=")">#{id,jdbcType=${pk.jdbcType}}</foreach>
+        </otherwise>
+      </choose>
+    </where>
+  </delete>
+
+#end
+#if($overrideInsert == '1')
+  <insert id="insert" parameterType="${serverPackage}.model.${className}">
+    insert into ${tableName}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+#foreach ($column in $columns)
+      <if test="${column.attributename} != null">
+        ${column.columnName},
+      </if>
+#end
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+#foreach ($column in $columns)
+      <if test="${column.attributename} != null">
+        #{${column.attributename},jdbcType=${column.jdbcType}},
+      </if>
+#end
+    </trim>
+  </insert>
+
+#end
+#if($overrideUpdate == '1')
+  <update id="updateById" parameterType="${serverPackage}.model.${className}">
+    update ${tableName}
+    <set>
+#foreach ($column in $columns)
+#if($column.columnName != $pk.columnName)
+      <if test="${column.attributename} != null">
+        ${column.columnName} = #{${column.attributename},jdbcType=${column.jdbcType}},
+      </if>
+#end
+#end
+    </set>
+    where ${pk.columnName} = #{${pk.attributename},jdbcType=${pk.jdbcType}}
+  </update>
+
+#end
+  <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from ${tableName}
+    <where>
+      <if test="${pk.attributename} != null">
+        and ${pk.columnName} = #{${pk.attributename},jdbcType=${pk.jdbcType}}
+      </if>
+    </where>
+  </select>
+  
+  <select id="list" parameterType="java.util.Map" resultType="${serverPackage}.model.${className}">
+    select
+    #foreach($column in $columns)$column.columnName#if($velocityCount != $columns.size()), #end#end
+
+    from ${tableName}
+    <where>
+      <if test="${pk.attributename} != null">
+        and ${pk.columnName} = #{${pk.attributename},jdbcType=${pk.jdbcType}}
+      </if>
+    </where>
+    <if test="pagination == true">
+      limit #{start,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

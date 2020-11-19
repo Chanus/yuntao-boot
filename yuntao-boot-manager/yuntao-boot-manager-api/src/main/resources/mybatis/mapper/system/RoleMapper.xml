@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chanus.yuntao.boot.manager.mapper.RoleMapper">
+  <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from sys_role
+    <where>
+      and role_id &lt;&gt; '1'
+      <if test='roleCode != null and roleCode != "0"'>
+        and FIND_IN_SET(#{roleCode,jdbcType=VARCHAR}, superior)
+      </if>
+      <if test="parentRoleId != null">
+        and parent_role_id = #{parentRoleId,jdbcType=VARCHAR}
+      </if>
+      <if test="validStatus != null">
+        and valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+      <if test="hasOperator != null">
+        and has_operator = #{hasOperator,jdbcType=CHAR}
+      </if>
+    </where>
+  </select>
+  
+  <select id="list" parameterType="java.util.Map" resultType="com.chanus.yuntao.boot.manager.model.Role">
+    select
+    id, role_id, role_code, role_name, parent_role_id, login_flag, has_operator, valid_status,
+    remark, priority, superior, gmt_create, gmt_modified
+    from sys_role
+    <where>
+      and role_id &lt;&gt; '1'
+      <if test='roleCode != null and roleCode != "0"'>
+        and FIND_IN_SET(#{roleCode,jdbcType=VARCHAR}, superior)
+      </if>
+      <if test="parentRoleId != null">
+        and parent_role_id = #{parentRoleId,jdbcType=VARCHAR}
+      </if>
+      <if test="validStatus != null">
+        and valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+      <if test="hasOperator != null">
+        and has_operator = #{hasOperator,jdbcType=CHAR}
+      </if>
+    </where>
+    order by role_id asc, priority asc
+    <if test="pagination == true">
+      limit #{start,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getParentRole" parameterType="java.lang.String" resultType="com.chanus.yuntao.boot.manager.model.Role">
+    select
+    p.id, p.role_id, p.role_code, p.role_name, p.parent_role_id, p.login_flag, p.has_operator, p.valid_status,
+    p.remark, p.priority, p.superior
+    from sys_role
+    inner join sys_role p on sys_role.parent_role_id = p.role_id
+    where sys_role.role_code = #{roleCode,jdbcType=VARCHAR}
+  </select>
+</mapper>

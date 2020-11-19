@@ -1,0 +1,98 @@
+spring:
+  profiles:
+    active: dev
+
+# 开发环境配置
+---
+yuntao:
+  name: 云道管理系统
+  version: 1.0.0
+  copyright: Copyright © 2020 Yuntao Chanus. All Rights Reserved.
+  profile: E:/yuntao
+  # 代码生成配置
+  code:
+    # 代码作者
+    author: Chanus
+    # 代码版本号
+    since: ${yuntao.version}
+    # 项目是否将后端分成两个模块，1 表示分成两个模块，0 表示单模块
+    multi: 1
+    # 生成服务类的包名，会在当前目录下创建子包 model，mapper，service.impl
+    serverPackage: com.chanus.yuntao.boot.manager
+    # 生成控制器的包名，会在当前目录下创建子包 controller
+    controllerPackage: com.chanus.yuntao.boot.manager
+    # 生成 Mybatis XML 的路径，是 mybatis/mapper 的子路径
+    xmlPath: system
+    # 表前缀，生成类名时会去除该前缀，例如，sys_log 生成 Log.java。如表不存在前缀配置空
+    tablePrefix: sys_
+    # 生成类名时是否自动去除表前缀，0-否，1-是
+    autoRemovePrefix: 1
+
+# 服务器配置
+server:
+  # 服务端口
+  port: 80
+  servlet:
+    # 应用的访问路径
+    context-path: /
+  tomcat:
+    # tomcat 的 URI 编码
+    uri-encoding: UTF-8
+    threads:
+      # tomcat 最大线程数
+      max: 800
+      # tomcat 启动初始化的线程数
+      min-spare: 30
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/yuntao-boot-manager?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: YzLgpmEaRbmXDcu7FaoISA==
+    filters: stat,wall
+    connectionProperties: password=${spring.datasource.password};druid.stat.mergeSql=true;druid.stat.logSlowSql=true;druid.stat.slowSqlMillis=5000
+
+  thymeleaf:
+    cache: false
+    mode: HTML
+
+  messages:
+    basename: static/i18n/message
+
+  jackson:
+    serialization:
+      # 格式化输出
+      indent_output: false
+      # 忽略无法转换的对象
+      fail_on_empty_beans: false
+    default-property-inclusion: non_empty
+    deserialization:
+      #允许对象忽略json中不存在的属性
+      fail_on_unknown_properties: false
+    parser:
+      # 允许出现特殊字符和转义符
+      allow_unquoted_control_chars: true
+      # 允许出现单引号
+      allow_single_quotes: true
+
+mybatis-plus:
+  config-location: classpath:mybatis/mybatis-config.xml
+  type-aliases-package: com.**.model
+  mapper-locations: classpath*:mybatis/mapper/**/*Mapper.xml
+  global-config:
+    db-config:
+      id-type: AUTO
+      insert-strategy: not_empty
+      update-strategy: not_null
+      select-strategy: not_empty
+      table-prefix: sys_
+
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: D:/logs/yuntao-manager

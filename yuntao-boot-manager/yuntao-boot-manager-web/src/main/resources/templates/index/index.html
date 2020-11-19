@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body class="layui-layout-body">
+    <input type="hidden" id="singleLocationLogin" value="${singleLocationLogin }" class="layui-input" autocomplete="off">
+    <div id="LAY_app">
+      <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+          <!-- 头部区域 -->
+          <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item layadmin-flexible" lay-unselect>
+              <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩"> <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i></a>
+            </li>
+            <!-- <li class="layui-nav-item layui-hide-xs" lay-unselect>
+              <a href="javascript:;" target="_blank" title="前台"> <i class="layui-icon layui-icon-website"></i></a>
+            </li> -->
+            <li class="layui-nav-item" lay-unselect>
+              <a href="javascript:;" layadmin-event="refresh" title="刷新"> <i class="layui-icon layui-icon-refresh-3"></i></a>
+            </li>
+            <li class="layui-tip-item">
+              <a href="javascript:;"><span id="currentTime"></span>&nbsp;&nbsp;(GMT+8)</a>
+            </li>
+          </ul>
+          
+          <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+            <!-- <li class="layui-nav-item" lay-unselect>
+              <a lay-href="javascript:;" layadmin-event="message" lay-text="消息中心"> 
+                <i class="layui-icon layui-icon-notice"></i>
+                &lt;!&ndash; 如果有新消息，则显示小圆点 &ndash;&gt;
+                <span class="layui-badge-dot"></span>
+              </a>
+            </li> -->
+            <li class="layui-nav-item layui-hide-xs" lay-unselect>
+              <a href="javascript:;" layadmin-event="theme"> <i class="layui-icon layui-icon-theme"></i></a>
+            </li>
+            <!-- <li class="layui-nav-item layui-hide-xs" lay-unselect>
+              <a href="javascript:;" layadmin-event="note"> <i class="layui-icon layui-icon-note"></i></a>
+            </li> -->
+            <li class="layui-nav-item layui-hide-xs" lay-unselect>
+              <a href="javascript:;" layadmin-event="fullscreen"> <i class="layui-icon layui-icon-screen-full"></i></a>
+            </li>
+
+            <li class="layui-nav-item" lay-unselect style="margin-right: 20px;">
+              <a href="javascript:;">
+                <img th:src="${#strings.isEmpty(session.loginUser.headImage) } ? @{/images/face.jpg} : @{${session.loginUser.headImage }}" class="layui-nav-img" width="35" height="35">
+                <cite th:text="${session.loginUser.loginNo }"></cite>
+              </a>
+              <dl class="layui-nav-child">
+                <dd style="text-align: center;">
+                  <a th:attr="lay-href=${#httpServletRequest.getContextPath() + '/index/user/operator-info' }">个人资料</a>
+                </dd>
+                <dd style="text-align: center;">
+                  <a th:attr="lay-href=${#httpServletRequest.getContextPath() + '/index/user/update-own-password' }">修改密码</a>
+                </dd>
+                <dd style="text-align: center;">
+                  <a href="javascript:;" id="reloadAuthority">刷新权限</a>
+                </dd>
+                <hr>
+                <dd layadmin-event="logout" style="text-align: center;">
+                  <a>退出</a>
+                </dd>
+              </dl>
+            </li>
+          </ul>
+        </div>
+  
+        <!-- 侧边菜单 -->
+        <div class="layui-side layui-side-menu">
+          <div class="layui-side-scroll">
+            <div class="layui-logo">
+              <span><a th:href="@{/index/index}" th:text="|${application.system_name} v${application.system_version}|"></a></span>
+            </div>
+  
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+              <!-- 一级菜单 -->
+              <li th:each="menu : ${session.loginUser.menus }" th:if="${menu.moduleIsMenu } eq '1'" th:attr="data-name=${menu.moduleId }" class="layui-nav-item">
+                <a href="javascript:;" th:attr="lay-tips=${menu.moduleName }" lay-direction="2"> <i th:class="${menu.moduleIcon }"></i> <cite th:text="${menu.moduleName }"></cite></a>
+                <dl class="layui-nav-child">
+                  <!-- 二级菜单 -->
+                  <dd th:each="menu2 : ${menu.children }" th:if="${menu2.moduleIsMenu } eq '1'" th:attr="data-name=${menu2.moduleId }">
+                    <a th:if="${menu2.moduleTarget} eq '1'" th:attr="href=${#httpServletRequest.getContextPath() + '/' + menu2.moduleUrl }, target='_blank'"> <i th:class="${menu2.moduleIcon }" th:text="${menu2.moduleName }"></i></a>
+                    <a th:if="${menu2.moduleTarget} ne '1'" th:attr="lay-href=${#httpServletRequest.getContextPath() + '/' + menu2.moduleUrl }"> <i th:class="${menu2.moduleIcon }" th:text="${menu2.moduleName }"></i></a>
+                  </dd>
+                </dl>
+              </li>
+            </ul>
+          </div>
+        </div>
+  
+        <!-- 页面标签 -->
+        <div class="layadmin-pagetabs" id="LAY_app_tabs">
+          <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+          <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+          <div class="layui-icon layadmin-tabs-control layui-icon-down">
+            <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+              <li class="layui-nav-item" lay-unselect>
+                <a href="javascript:;"></a>
+                <dl class="layui-nav-child layui-anim-fadein">
+                  <dd layadmin-event="closeThisTabs">
+                    <a href="javascript:;">关闭当前标签页</a>
+                  </dd>
+                  <dd layadmin-event="closeOtherTabs">
+                    <a href="javascript:;">关闭其它标签页</a>
+                  </dd>
+                  <dd layadmin-event="closeAllTabs">
+                    <a href="javascript:;">关闭全部标签页</a>
+                  </dd>
+                </dl></li>
+            </ul>
+          </div>
+          <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
+            <ul class="layui-tab-title" id="LAY_app_tabsheader">
+              <li lay-id="0" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
+            </ul>
+          </div>
+        </div>
+  
+        <!-- 主体内容 -->
+        <div class="layui-body" id="LAY_app_body">
+          <div class="layadmin-tabsbody-item layui-show">
+            <iframe src="" frameborder="0" class="layadmin-iframe"></iframe>
+          </div>
+        </div>
+  
+        <!-- 辅助元素，一般用于移动设备下遮罩 -->
+        <div class="layadmin-body-shade" layadmin-event="shade"></div>
+      </div>
+    </div>
+
+    <th:block th:include="public :: footer"/>
+    <script type="text/javascript" src="../static/js/system/index.js?v=1.0.0.1" th:src="@{/js/system/index.js?v=1.0.0.1}"></script>
+  </body>
+</html>

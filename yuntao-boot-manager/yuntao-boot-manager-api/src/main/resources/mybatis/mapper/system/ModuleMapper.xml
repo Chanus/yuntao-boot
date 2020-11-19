@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chanus.yuntao.boot.manager.mapper.ModuleMapper">
+  <sql id="Base_Column_List">
+    module_id, module_parent_id, module_code, module_name, module_url, module_level, module_is_menu, module_for_permission,
+    module_for_admin, module_belong, module_icon, module_target, remark, valid_status, gmt_create, gmt_modified
+  </sql>
+
+  <delete id="deleteBatchIds" parameterType="java.lang.Integer">
+    delete from sys_module
+    <where>
+      <choose>
+        <when test="coll == null or coll.size() == 0">
+          1 &lt;&gt; 1
+        </when>
+        <when test="coll.size() == 1">
+          module_id =
+          <foreach collection="coll" item="id">#{id,jdbcType=INTEGER}</foreach>
+          or module_parent_id =
+          <foreach collection="coll" item="id">#{id,jdbcType=INTEGER}</foreach>
+        </when>
+        <otherwise>
+          module_id in
+          <foreach collection="coll" item="id" open="(" separator="," close=")">#{id,jdbcType=INTEGER}</foreach>
+          or module_parent_id in
+          <foreach collection="coll" item="id" open="(" separator="," close=")">#{id,jdbcType=INTEGER}</foreach>
+        </otherwise>
+      </choose>
+    </where>
+  </delete>
+
+  <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from sys_module
+    <where>
+      <if test="moduleParentId != null">
+        module_parent_id = #{moduleParentId,jdbcType=INTEGER}
+      </if>
+      <if test="validStatus != null">
+        and valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="list" parameterType="java.util.Map" resultType="com.chanus.yuntao.boot.manager.model.Module">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_module
+    <where>
+      <if test="moduleParentId != null">
+        module_parent_id = #{moduleParentId,jdbcType=INTEGER}
+      </if>
+      <if test="validStatus != null">
+        and valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+    </where>
+    order by module_level asc
+    <if test="pagination == true">
+      limit #{start,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getMaxModuleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select max(module_id) from sys_module where module_id &lt;&gt; 99 and module_parent_id = #{moduleParentId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getMaxModuleLevel" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select max(module_level) from sys_module where module_id &lt;&gt; 99 and module_parent_id = #{moduleParentId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getModuleForPriority" parameterType="java.util.Map" resultType="com.chanus.yuntao.boot.manager.model.Module">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_module
+    where module_parent_id = #{moduleParentId,jdbcType=INTEGER}
+    <choose>
+      <when test='direction == "up"'>
+        and module_level &lt; #{moduleLevel,jdbcType=CHAR} order by module_level desc
+      </when>
+      <when test='direction == "down"'>
+        and module_level &gt; #{moduleLevel,jdbcType=CHAR} order by module_level asc
+      </when>
+    </choose>
+    limit 1
+  </select>
+
+  <resultMap id="RoleModulePowerMap" type="com.chanus.yuntao.boot.manager.model.Module">
+    <id column="p_module_id" jdbcType="INTEGER" property="moduleId"/>
+    <result column="p_module_code" jdbcType="VARCHAR" property="moduleCode"/>
+    <result column="p_module_name" jdbcType="VARCHAR" property="moduleName"/>
+    <result column="p_module_icon" jdbcType="VARCHAR" property="moduleIcon"/>
+    <result column="p_module_target" jdbcType="CHAR" property="moduleTarget"/>
+    <result column="p_module_is_menu" jdbcType="CHAR" property="moduleIsMenu"/>
+    <collection property="children" ofType="com.chanus.yuntao.boot.manager.model.Module">
+      <id column="module_id" jdbcType="INTEGER" property="moduleId"/>
+      <result column="module_parent_id" jdbcType="INTEGER" property="moduleParentId"/>
+      <result column="module_code" jdbcType="VARCHAR" property="moduleCode"/>
+      <result column="module_name" jdbcType="VARCHAR" property="moduleName"/>
+      <result column="module_url" jdbcType="VARCHAR" property="moduleUrl"/>
+      <result column="module_icon" jdbcType="VARCHAR" property="moduleIcon"/>
+      <result column="module_target" jdbcType="CHAR" property="moduleTarget"/>
+      <result column="module_is_menu" jdbcType="CHAR" property="moduleIsMenu"/>
+      <collection property="modulePowers" ofType="com.chanus.yuntao.boot.manager.model.ModulePower">
+        <id column="mp_id" jdbcType="INTEGER" property="mpId"/>
+        <result column="smp_module_code" jdbcType="VARCHAR" property="moduleCode"/>
+        <result column="power_item" jdbcType="VARCHAR" property="powerItem"/>
+        <result column="alias_name" jdbcType="VARCHAR" property="aliasName"/>
+        <result column="has_power" jdbcType="INTEGER" property="hasPower"/>
+      </collection>
+    </collection>
+  </resultMap>
+
+  <select id="listRoleModulePowerForAdmin" resultMap="RoleModulePowerMap">
+    select
+    sm1.module_id p_module_id, sm1.module_code p_module_code, sm1.module_name p_module_name,
+    sm2.module_id, sm2.module_code, sm2.module_name,
+    smp.mp_id, smp.module_code smp_module_code, smp.power_item, smp.alias_name, '1' has_power
+    from sys_module sm1
+    inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+    inner join sys_module_power smp on sm2.module_code = smp.module_code
+    inner join sys_power sp on smp.power_item = sp.power_item
+    where sm1.module_parent_id = 0
+    and sm1.module_for_permission = '1'
+    and sm2.module_for_permission = '1'
+    and sm1.module_belong in ('0', '1')
+    and sm2.module_belong in ('0', '1')
+    order by sm1.module_level asc, sm2.module_level asc, sp.priority asc
+  </select>
+
+  <select id="listRoleModulePowerForNotAdmin" resultMap="RoleModulePowerMap">
+    <choose>
+      <when test='parentRoleCode == "0"'>
+        select
+        sm1.module_id p_module_id, sm1.module_code p_module_code, sm1.module_name p_module_name,
+        sm2.module_id, sm2.module_code, sm2.module_name,
+        smp.mp_id, smp.module_code smp_module_code, smp.power_item, smp.alias_name, srmp.rmp_id has_power
+        from sys_module sm1
+        inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+        inner join sys_module_power smp on sm2.module_code = smp.module_code
+        inner join sys_power sp on smp.power_item = sp.power_item
+        left join sys_role_module_power srmp on sm2.module_code = srmp.module_code and smp.power_item = srmp.power_item
+        and srmp.role_code = #{roleCode,jdbcType=VARCHAR}
+        where sm1.module_parent_id = 0
+        and sm1.module_for_permission = '1'
+        and sm1.module_for_admin = '0'
+        and sm1.module_belong in ('0', '2')
+        and sm1.valid_status = '1'
+        and sm2.module_for_permission = '1'
+        and sm2.module_for_admin = '0'
+        and sm2.module_belong in ('0', '2')
+        and sm2.valid_status = '1'
+        and sp.valid_status = '1'
+        order by sm1.module_level asc, sm2.module_level asc, sp.priority asc
+      </when>
+      <otherwise>
+        select
+        sm1.module_id p_module_id, sm1.module_code p_module_code, sm1.module_name p_module_name,
+        sm2.module_id, sm2.module_code, sm2.module_name,
+        smp.mp_id, smp.module_code smp_module_code, smp.power_item, smp.alias_name, srmp2.rmp_id has_power
+        from sys_module sm1
+        inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+        inner join sys_module_power smp on sm2.module_code = smp.module_code
+        inner join sys_power sp on smp.power_item = sp.power_item
+        inner join sys_role_module_power srmp on sm2.module_code = srmp.module_code and smp.power_item = srmp.power_item
+        and srmp.role_code = #{parentRoleCode,jdbcType=VARCHAR}
+        left join sys_role_module_power srmp2 on sm2.module_code = srmp2.module_code and smp.power_item =
+        srmp2.power_item and srmp2.role_code = #{roleCode,jdbcType=VARCHAR}
+        where sm1.module_parent_id = 0
+        and sm1.module_for_permission = '1'
+        and sm1.module_for_admin = '0'
+        and sm1.module_belong in ('0', '2')
+        and sm1.valid_status = '1'
+        and sm2.module_for_permission = '1'
+        and sm2.module_for_admin = '0'
+        and sm2.module_belong in ('0', '2')
+        and sm2.valid_status = '1'
+        and sp.valid_status = '1'
+        order by sm1.module_level asc, sm2.module_level asc, sp.priority asc
+      </otherwise>
+    </choose>
+  </select>
+
+  <select id="listSubModulePower" resultMap="RoleModulePowerMap">
+    <choose>
+      <when test="masterRoleCode == 0">
+        select
+        sm1.module_id p_module_id, sm1.module_code p_module_code, sm1.module_name p_module_name,
+        sm2.module_id, sm2.module_code, sm2.module_name,
+        smp.mp_id, smp.module_code smp_module_code, smp.power_item, smp.alias_name, srmp.rmp_id has_power
+        from sys_module sm1
+        inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+        inner join sys_module_power smp on sm2.module_code = smp.module_code
+        inner join sys_power sp on smp.power_item = sp.power_item
+        left join sys_role_module_power srmp on sm2.module_code = srmp.module_code and smp.power_item = srmp.power_item
+        and srmp.sub_no = #{subNo,jdbcType=VARCHAR}
+        where sm1.module_parent_id = 0
+        and sm1.module_for_permission = '1'
+        and sm1.valid_status = '1'
+        and sm2.module_for_permission = '1'
+        and sm2.valid_status = '1'
+        and sp.valid_status = '1'
+        order by sm1.module_level asc, sm2.module_level asc, sp.priority asc
+      </when>
+      <otherwise>
+        select
+        sm1.module_id p_module_id, sm1.module_code p_module_code, sm1.module_name p_module_name,
+        sm2.module_id, sm2.module_code, sm2.module_name,
+        smp.mp_id, smp.module_code smp_module_code, smp.power_item, smp.alias_name, submp.rmp_id has_power
+        from sys_module sm1
+        inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+        inner join sys_module_power smp on sm2.module_code = smp.module_code
+        inner join sys_power sp on smp.power_item = sp.power_item
+        inner join sys_role_module_power srmp on sm2.module_code = srmp.module_code and smp.power_item = srmp.power_item
+        and srmp.role_code = #{masterRoleCode,jdbcType=VARCHAR}
+        left join sys_role_module_power submp on sm2.module_code = submp.module_code and smp.power_item =
+        submp.power_item and submp.sub_no = #{subNo,jdbcType=VARCHAR}
+        where sm1.module_parent_id = 0
+        and sm1.module_for_permission = '1'
+        and sm1.module_for_admin = '0'
+        and sm1.valid_status = '1'
+        and sm2.module_for_permission = '1'
+        and sm2.module_for_admin = '0'
+        and sm2.valid_status = '1'
+        and sp.valid_status = '1'
+        order by sm1.module_level asc, sm2.module_level asc, sp.priority asc
+      </otherwise>
+    </choose>
+  </select>
+
+  <select id="listMenu" resultMap="RoleModulePowerMap">
+    <choose>
+      <when test='roleCode == "0"'>
+        select
+        sm1.module_id p_module_id, sm1.module_code p_module_code, sm1.module_name p_module_name, sm1.module_icon
+        p_module_icon, sm1.module_target p_module_target,
+        sm1.module_is_menu p_module_is_menu, sm2.module_id, sm2.module_parent_id, sm2.module_code, sm2.module_name,
+        sm2.module_url, sm2.module_icon,
+        sm2.module_target, sm2.module_is_menu, smp.mp_id, smp.power_item
+        from sys_module sm1
+        inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+        inner join sys_module_power smp on sm2.module_code = smp.module_code
+        inner join sys_power sp on smp.power_item = sp.power_item
+        where sm1.module_parent_id = 0
+        and sm1.module_for_permission = '1'
+        and sm1.module_belong in ('0', '1')
+        and sm1.valid_status = '1'
+        and sm2.module_for_permission = '1'
+        and sm2.module_belong in ('0', '1')
+        and sm2.valid_status = '1'
+        and sp.valid_status = '1'
+        order by sm1.module_level asc, sm2.module_level asc, sp.priority asc
+      </when>
+      <when test='roleCode == "1"'>
+        select
+        sm1.module_id p_module_id, sm1.module_code p_module_code, sm1.module_name p_module_name, sm1.module_icon
+        p_module_icon, sm1.module_target p_module_target,
+        sm1.module_is_menu p_module_is_menu, sm2.module_id, sm2.module_parent_id, sm2.module_code, sm2.module_name,
+        sm2.module_url, sm2.module_icon,
+        sm2.module_target, sm2.module_is_menu, smp.mp_id, smp.power_item
+        from sys_module sm1
+        inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+        inner join sys_module_power smp on sm2.module_code = smp.module_code
+        inner join sys_power sp on smp.power_item = sp.power_item
+        inner join sys_role_module_power srmp on sm2.module_code = srmp.module_code and smp.power_item = srmp.power_item
+        and srmp.sub_no = #{subNo,jdbcType=VARCHAR}
+        where sm1.module_parent_id = 0
+        and sm1.module_for_permission = '1'
+        and sm1.module_for_admin = '0'
+        and sm1.valid_status = '1'
+        and sm2.module_for_permission = '1'
+        and sm2.module_for_admin = '0'
+        and sm2.valid_status = '1'
+        and sp.valid_status = '1'
+        order by sm1.module_level asc, sm2.module_level asc, sp.priority asc
+      </when>
+      <otherwise>
+        select
+        sm1.module_id p_module_id, sm1.module_code p_module_code, sm1.module_name p_module_name, sm1.module_icon
+        p_module_icon, sm1.module_target p_module_target, sm1.module_is_menu p_module_is_menu,
+        sm2.module_id, sm2.module_parent_id, sm2.module_code, sm2.module_name, sm2.module_url, sm2.module_icon,
+        sm2.module_target, sm2.module_is_menu,
+        smp.mp_id, smp.power_item
+        from sys_module sm1
+        inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+        inner join sys_module_power smp on sm2.module_code = smp.module_code
+        inner join sys_power sp on smp.power_item = sp.power_item
+        inner join sys_role_module_power srmp on sm2.module_code = srmp.module_code and smp.power_item = srmp.power_item
+        and srmp.role_code = #{roleCode,jdbcType=VARCHAR}
+        where sm1.module_parent_id = 0
+        and sm1.module_for_permission = '1'
+        and sm1.module_for_admin = '0'
+        and sm1.valid_status = '1'
+        and sm2.module_for_permission = '1'
+        and sm2.module_for_admin = '0'
+        and sm2.valid_status = '1'
+        and sp.valid_status = '1'
+        order by sm1.module_level asc, sm2.module_level asc, sp.priority asc
+      </otherwise>
+    </choose>
+  </select>
+
+  <select id="listUrl" resultType="java.lang.String">
+    <choose>
+      <when test='roleCode == "0"'>
+        select distinct url from sys_module_power_method
+      </when>
+      <when test='roleCode == "1"'>
+        select distinct url from sys_module sm1
+        inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+        inner join sys_module_power smp on sm2.module_code = smp.module_code
+        inner join sys_power sp on smp.power_item = sp.power_item
+        inner join sys_role_module_power srmp on sm2.module_code = srmp.module_code and smp.power_item = srmp.power_item
+        and srmp.sub_no = #{subNo,jdbcType=VARCHAR}
+        inner join sys_module_power_method smpm on smp.mp_id = smpm.mp_id
+        where sm1.module_parent_id = 0
+        and sm1.module_for_permission = '1'
+        and sm1.module_for_admin = '0'
+        and sm1.valid_status = '1'
+        and sm2.module_for_permission = '1'
+        and sm2.module_for_admin = '0'
+        and sm2.valid_status = '1'
+        and sp.valid_status = '1'
+        union
+        select distinct url from sys_module sm1
+        inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+        inner join sys_module_power smp on sm2.module_code = smp.module_code
+        inner join sys_module_power_method smpm on smp.mp_id = smpm.mp_id
+        where sm1.module_parent_id = 0
+        and sm1.module_for_permission = '0'
+        and sm1.module_for_admin = '0'
+        and sm1.valid_status = '1'
+        and sm2.module_for_permission = '0'
+        and sm2.module_for_admin = '0'
+        and sm2.valid_status = '1'
+      </when>
+      <otherwise>
+        select distinct url from sys_module sm1
+        inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+        inner join sys_module_power smp on sm2.module_code = smp.module_code
+        inner join sys_power sp on smp.power_item = sp.power_item
+        inner join sys_role_module_power srmp on sm2.module_code = srmp.module_code and smp.power_item = srmp.power_item
+        and srmp.role_code = #{roleCode,jdbcType=VARCHAR}
+        inner join sys_module_power_method smpm on smp.mp_id = smpm.mp_id
+        where sm1.module_parent_id = 0
+        and sm1.module_for_permission = '1'
+        and sm1.module_for_admin = '0'
+        and sm1.valid_status = '1'
+        and sm2.module_for_permission = '1'
+        and sm2.module_for_admin = '0'
+        and sm2.valid_status = '1'
+        and sp.valid_status = '1'
+        union
+        select distinct url from sys_module sm1
+        inner join sys_module sm2 on sm1.module_id = sm2.module_parent_id
+        inner join sys_module_power smp on sm2.module_code = smp.module_code
+        inner join sys_module_power_method smpm on smp.mp_id = smpm.mp_id
+        where sm1.module_parent_id = 0
+        and sm1.module_for_permission = '0'
+        and sm1.module_for_admin = '0'
+        and sm1.valid_status = '1'
+        and sm2.module_for_permission = '0'
+        and sm2.module_for_admin = '0'
+        and sm2.valid_status = '1'
+      </otherwise>
+    </choose>
+  </select>
+</mapper>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body>
+    <div class="pd-5">
+      <form class="layui-form layui-form-pane">
+        <input type="hidden" name="id" th:value="${role.id }" class="layui-input" autocomplete="off">
+        <div th:if="${cmd } eq 'add'" class="layui-form-item">
+          <label class="layui-form-label">上级角色<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <select name="parentRoleId" lay-filter="parentRoleId" lay-verify="required" lay-search>
+              <option value="">请选择上级角色</option>
+              <option th:each="parentRole : ${parentRoles }" th:value="${parentRole.roleId }" th:text="${parentRole.roleName }"></option>
+            </select>
+          </div>
+        </div>
+        <div th:if="${cmd } eq 'update'" class="layui-form-item">
+          <label class="layui-form-label">角色ID</label>
+          <div class="layui-input-block">
+            <input type="text" name="roleId" readonly th:value="${role.roleId }" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">角色代码</label>
+          <div class="layui-input-block">
+            <input type="text" name="roleCode" th:value="${role.roleCode }" placeholder="请输入角色代码，不填则默认为角色ID" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">角色名称<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="roleName" required lay-verify="required" th:value="${role.roleName }" placeholder="请输入角色名称" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item" pane>
+          <label class="layui-form-label">登录系统<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="radio" name="loginFlag" value="1" title="允许" th:checked="${role.loginFlag eq null } or ${role.loginFlag } eq '1'">
+            <input type="radio" name="loginFlag" value="0" title="不允许" th:checked="${role.loginFlag } eq '0'">
+          </div>
+        </div>
+        <div th:if="${cmd } eq 'add'" class="layui-form-item" pane>
+          <label class="layui-form-label">下属成员<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="radio" name="hasOperator" value="1" title="具有" checked>
+            <input type="radio" name="hasOperator" value="0" title="不具有">
+          </div>
+        </div>
+        <div class="layui-form-item" pane>
+          <label class="layui-form-label">状态<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="radio" name="validStatus" lay-verify="mustradio" value="1" title="启用" th:checked="${role.validStatus eq null } or ${role.validStatus } eq '1'">
+            <input type="radio" name="validStatus" value="0" title="停用" th:checked="${role.validStatus } eq '0'">
+          </div>
+        </div>
+        <div th:if="${cmd } eq 'update'" class="layui-form-item">
+          <label class="layui-form-label">排序</label>
+          <div class="layui-input-block">
+            <input type="text" name="priority" lay-verify="pinteger" lay-ignore="ignore" th:value="${role.priority }" placeholder="请输入角色排序优先级" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">备注</label>
+          <div class="layui-input-block">
+            <textarea name="remark" th:text="${role.remark }" placeholder="请输入备注" class="layui-textarea"></textarea>
+          </div>
+        </div>
+        <div class="layui-form-item text-c">
+          <div class="layui-inline">
+            <div class="layui-inline" th:switch="${ cmd }">
+              <th:block th:case="'add'">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="add">添加</button>
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="addAgain">保存并添加下一个</button>
+              </th:block>
+              <th:block th:case="'update'">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="update">确定</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              </th:block>
+              <span class="layui-btn layui-btn-primary" id="cancel">取消</span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <th:block th:include="public :: footer"/>
+    <script type="text/javascript" th:src="@{/js/system/role.js?v=1.0.0.1}"></script>
+  </body>
+</html>

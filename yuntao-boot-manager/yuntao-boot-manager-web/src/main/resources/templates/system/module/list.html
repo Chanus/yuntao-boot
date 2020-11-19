@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+    <link rel="stylesheet" th:href="@{/lib/zTree/zTreeStyle/zTreeStyle.css}"/>
+  </head>
+  <body onload="loadTree();">
+    <div class="pd-5">
+      <div class="page-tree">
+        <ul id="modules" class="ztree"></ul>
+      </div>
+      <div class="page-tree-list">
+        <!-- 搜索条件 -->
+        <div class="layui-form layui-form-pane">
+          <div class="layui-form-item">
+            <div th:if="${ powers['ADD'] }" class="layui-inline">
+              <button id="add" class="layui-btn layui-btn-normal"><i class="layui-icon layui-icon-add-circle-fine"></i>添加</button>
+            </div>
+            <div th:if="${ powers['DELETE'] }" class="layui-inline">
+              <button id="delete" class="layui-btn layui-btn-danger"><i class="layui-icon layui-icon-delete"></i>删除</button>
+            </div>
+          </div>
+        </div>
+        <!-- 数据展示 -->
+        <table class="layui-hide" id="datas" lay-filter="datas"></table>
+      </div>
+    </div>
+    <!-- 自定义模板 -->
+    <script type="text/html" id="toolbar">
+        {{# if([[${powers.containsKey('UPDATE')}]]){ }}
+          <a class="layui-btn layui-btn-xs" lay-event="update">编辑</a>
+        {{# } }}
+        {{# if([[${powers.containsKey('DELETE')}]]){ }}
+          <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        {{# } }}
+        {{# if([[${powers.containsKey('PRIORITY')}]]){ }}
+          <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="up" title="提升优先级"><i class="layui-icon layui-icon-up"></i></a>
+          <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="down" title="降低优先级"><i class="layui-icon layui-icon-down"></i></a>
+        {{# } }}
+        {{# if([[${powers.containsKey('UPDATE') }]] && d.moduleParentId != 0){ }}
+          <a class="layui-btn layui-btn-xs" lay-event="transfer">迁移</a>
+        {{# } }}
+    </script>
+
+    <th:block th:include="public :: footer"/>
+    <script type="text/javascript" th:src="@{/lib/zTree/jquery.ztree.core.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/system/module.js?v=1.0.0.1}"></script>
+  </body>
+</html>

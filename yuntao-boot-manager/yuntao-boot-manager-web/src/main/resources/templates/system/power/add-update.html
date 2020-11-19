@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body>
+    <div class="pd-5">
+      <form class="layui-form layui-form-pane">
+        <input type="hidden" name="id" th:value="${power.id }" class="layui-input" autocomplete="off">
+        <div class="layui-form-item">
+          <label class="layui-form-label">权限代码<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="powerItem" required th:readonly="${cmd } eq 'update'" lay-verify="required" th:value="${power.powerItem }" placeholder="请输入权限代码" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">权限名称<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="powerName" required lay-verify="required" th:value="${power.powerName }" placeholder="请输入权限名称" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item" pane>
+          <label class="layui-form-label">状态<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="radio" name="validStatus" lay-verify="mustradio" value="1" title="启用" th:checked="${power.validStatus eq null } or ${power.validStatus } eq '1'">
+            <input type="radio" name="validStatus" value="0" title="停用" th:checked="${power.validStatus } eq '0'">
+          </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">备注</label>
+          <div class="layui-input-block">
+            <textarea name="remark" th:text="${power.remark }" placeholder="请输入备注" class="layui-textarea"></textarea>
+          </div>
+        </div>
+        <div class="layui-form-item text-c">
+          <div class="layui-inline" th:switch="${ cmd }">
+            <th:block th:case="'add'">
+              <button class="layui-btn layui-btn-normal" lay-submit lay-filter="add">添加</button>
+              <button class="layui-btn layui-btn-normal" lay-submit lay-filter="addAgain">保存并添加下一个</button>
+            </th:block>
+            <th:block th:case="'update'">
+              <button class="layui-btn layui-btn-normal" lay-submit lay-filter="update">确定</button>
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </th:block>
+            <span class="layui-btn layui-btn-primary" id="cancel">取消</span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <th:block th:include="public :: footer"/>
+    <script type="text/javascript" th:src="@{/js/system/power.js?v=1.0.0.1}"></script>
+  </body>
+</html>

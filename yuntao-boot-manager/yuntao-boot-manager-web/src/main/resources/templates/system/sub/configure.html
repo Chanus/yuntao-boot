@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body>
+    <div class="pd-5">
+      <!-- 搜索条件 -->
+      <div class="layui-form layui-form-pane">
+        <a th:href="@{/system/sub/main}" class="layui-btn layui-btn-small"><i class="layui-icon layui-icon-return"></i>返回</a>
+      </div>
+      <input type="hidden" id="subNo" th:value="${subNo }" class="layui-input" autocomplete="off">
+      <!-- 子账号权限列表 -->
+      <table class="layui-table" lay-even>
+        <thead>
+          <tr>
+            <th width="150px" style="text-align: center;">模块</th>
+            <th colspan="2" style="text-align: center;" th:text="|【${subNo }】菜单/权限|"></th>
+            <th width="60px" style="text-align: center;"><input type="checkbox" id="selectAll" style="width:16px;height:16px;"></th>
+          </tr>
+        </thead>
+        <tbody th:switch="${#lists.isEmpty(menus)}">
+          <tr th:case="true">
+            <td colspan="4" align="center">无数据</td>
+          </tr>
+          <th:block th:case="false">
+            <th:block th:each="item1 : ${menus }">
+              <tr th:each="item2,loopStatus : ${item1.children }">
+                <td th:if="${loopStatus.index } eq 0" th:rowspan="${item1.children.size() }" align="center" th:text="${item1.moduleName }"></td>
+                <td width="180px" align="center" th:text="${item2.moduleName }"></td>
+                <td align="left">
+                  <th:block th:each="item3 : ${item2.modulePowers }">
+                    <input type="checkbox" th:id="|module_power_${item2.moduleId }_${item3.mpId }|" th:value="|${item2.moduleCode }.${item3.powerItem }|" th:checked="${item3.hasPower } ne null" style="width:16px;height:16px;">
+                    [[${item3.aliasName}]]
+                  </th:block>
+                </td>
+                <td align="center"><input type="checkbox" th:id="|module_${item2.moduleId }|" style="width:16px;height:16px;"></td>
+              </tr>
+            </th:block>
+            <tr>
+              <td colspan="4" align="center"><button id="grant" class="layui-btn layui-btn-normal">授权</button></td>
+            </tr>
+          </th:block>
+        </tbody>
+      </table>
+    </div>
+
+    <th:block th:include="public :: footer"/>
+    <script type="text/javascript" th:src="@{/js/system/sub.js?v=1.0.0.1}"></script>
+  </body>
+</html>

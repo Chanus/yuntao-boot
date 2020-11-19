@@ -1,0 +1,185 @@
+@charset "utf-8";
+
+html {
+    background-color: #fff;
+}
+
+/** 覆盖layui-disabled样式 */
+.layui-disabled, .layui-disabled:hover {
+    color: #666 !important;
+}
+
+/** 顶部提示信息 */
+.layui-tip-item {
+    color: #393D49;
+    height: 50px;
+    line-height: 50px;
+    margin: 0 20px;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+/** 个人信息 */
+.user_right {
+    text-align: center;
+}
+
+.user_right p {
+    margin: 10px 0 25px;
+    font-size: 12px;
+    text-align: center;
+    color: #FF5722;
+}
+
+.user_right img#userFace {
+    width: 200px;
+    height: 200px;
+    margin-top: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 50px #44576b;
+}
+
+@media screen and (max-width: 450px) {
+    #userFaceBtn {
+        height: 30px;
+        line-height: 30px;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+
+    .user_right img#userFace {
+        width: 100px;
+        height: 100px;
+        margin-top: 0;
+    }
+
+    .layui-col-xs12 .layui-form-label {
+        width: 60px;
+        padding-left: 0;
+    }
+
+    .layui-col-xs12 .layui-input-block, .layui-col-xs12 .layui-input-inline {
+        margin-left: 75px;
+    }
+
+    .layui-col-xs12 .layui-input-inline {
+        left: 0 !important;
+        width: auto !important;
+    }
+
+    .noFind {
+        padding-top: 0;
+    }
+
+    *[pc] {
+        display: none;
+    }
+}
+
+/** 间距设置 */
+.pd-5 {
+    padding: 5px;
+}
+
+.pd-10 {
+    padding: 10px;
+}
+
+.pd-20 {
+    padding: 20px;
+}
+
+.mg-l-20 {
+    margin-left: 20px;
+}
+
+.mg-r-20 {
+    margin-right: 20px;
+}
+
+/** 页面树 */
+.page-tree {
+    width: 200px;
+    float: left;
+    background-color: #d9edf7;
+    border: 1px solid #ececff;
+}
+
+.page-tree-list {
+    width: calc(100% - 210px);
+    float: right;
+}
+
+/** 常用颜色 */
+.red {
+    color: #FF5722;
+    padding-left: 2px;
+}
+
+.color-red {
+    color: #FF5722;
+}
+
+.color-lightblue {
+    color: #4F94CD;
+}
+
+.color-lightgreen {
+    color: #5FB878;
+}
+
+/** 字体加粗 */
+.b {
+    font-weight: bold;
+}
+
+/** span高度自适应 */
+span[class*="layui-badge"] {
+    height: auto;
+}
+
+/** 背景颜色 */
+.layui-bg-custom-lightgreen {
+    background-color: #5FB878 !important;
+}
+
+/** 对齐方式 */
+.text-l, .text-l th, .text-l td {
+    text-align: left;
+}
+
+.text-c, .text-c th, .text-c td {
+    text-align: center;
+}
+
+.text-r, .text-r th, .text-r td {
+    text-align: right;
+}
+
+/*表格中操作按钮取消左间距*/
+td .layui-btn + .layui-btn {
+    margin-left: 0;
+}
+
+/*菜单栏适应FontAwesome图标*/
+.layui-nav .fa {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    margin-top: -7px;
+}
+
+/*layui表格编辑列增加编辑标识*/
+.layui-table-body td[data-edit="text"]:after {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    content: "\e642";
+    font-family: layui-icon!important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.chanus.yuntaoboot</groupId>
   <artifactId>yuntao-boot</artifactId>
-  <version>0.3.0</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>云道 Spring Boot 基础框架整合</description>
@@ -59,6 +59,7 @@
   <modules>
     <module>yuntao-boot-common</module>
     <module>yuntao-boot-framework</module>
+    <module>yuntao-boot-manager</module>
   </modules>
 
   <build>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+    <link rel="stylesheet" th:href="@{/lib/zTree/zTreeStyle/zTreeStyle.css}"/>
+  </head>
+  <body onload="loadTree();">
+    <div class="pd-5">
+      <!-- 角色列表树 -->
+      <div class="page-tree">
+        <ul id="roles" class="ztree"></ul>
+      </div>
+      <!-- 操作员列表 -->
+      <div class="page-tree-list" id="operator-list">
+        <!-- 搜索条件 -->
+        <div class="layui-form layui-form-pane">
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">操作员账号</label>
+              <div class="layui-input-block">
+                <input type="text" id="operatorNo" placeholder="请输入操作员账号" class="layui-input" autocomplete="off">
+              </div>
+            </div>
+            <div class="layui-inline">
+              <button id="search" class="layui-btn"><i class="layui-icon layui-icon-search"></i>搜索</button>
+            </div>
+            <div th:if="${ powers['ADD'] }" class="layui-inline">
+              <button id="add" class="layui-btn layui-btn-normal" style="display: none;"><i class="layui-icon layui-icon-add-circle-fine"></i>添加</button>
+            </div>
+            <div th:if="${ powers['DELETE'] }" class="layui-inline">
+              <button id="delete" class="layui-btn layui-btn-danger"><i class="layui-icon layui-icon-delete"></i>删除</button>
+            </div>
+          </div>
+        </div>
+        <!-- 数据展示 -->
+        <table class="layui-hide" id="datas" lay-filter="datas"></table>
+      </div>
+    </div>
+    <!-- 自定义模板 -->
+    <script type="text/html" id="toolbar">
+        {{# if([[${session.loginUser.masterRoleCode }]] != d.operatorRoleCode){ }}
+            {{# if([[${powers.containsKey('UPDATE')}]]){ }}
+              <a class="layui-btn layui-btn-xs" lay-event="update">编辑</a>
+            {{# } }}
+            {{# if([[${powers.containsKey('PASSWORD')}]]){ }}
+              <a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="password">修改密码</a>
+            {{# } }}
+            {{# if([[${powers.containsKey('DELETE')}]]){ }}
+              <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            {{# } }}
+        {{# } }}
+    </script>
+
+    <th:block th:include="public :: footer"/>
+    <script type="text/javascript" th:src="@{/lib/zTree/jquery.ztree.core.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/system/operator.js?v=1.0.0.1}"></script>
+  </body>
+</html>

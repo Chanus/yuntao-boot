@@ -1,0 +1,134 @@
+<head th:fragment="header">
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all"/>
+  <link rel="stylesheet" th:href="@{/lib/layui/css/modules/layer/default/layer.css}" media="all"/>
+  <link rel="stylesheet" th:href="@{/lib/layuiadmin/style/admin.css}" media="all">
+  <link rel="stylesheet" th:href="@{/font/font-awesome-4.7.0/css/font-awesome.min.css}" media="all"/>
+  <link rel="stylesheet" th:href="@{/css/global.css?v=1.0.0.1}"/>
+  <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+  <title th:text="${application.system_name }"></title>
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <script th:inline="javascript" type="text/javascript">var ctx = [[@{/}]];</script>
+</head>
+
+<div th:fragment="footer">
+  <script type="text/javascript" th:src="@{/js/jquery-1.12.4.min.js}"></script>
+  <script type="text/javascript" th:src="@{/lib/layui/layui.js}"></script>
+  <script type="text/javascript" th:src="@{/js/verify.js}"></script>
+  <script type="text/javascript" th:src="@{/js/common.js}"></script>
+  <script type="text/javascript" th:src="@{/js/jquery.i18n.properties.js}"></script>
+  <script type="text/javascript" th:src="@{/js/language.js}"></script>
+</div>
+
+<div th:fragment="datetime">
+  <div class="layui-inline">
+    <label class="layui-form-label date-description">时间</label>
+    <div class="layui-input-inline">
+      <input type="text" id="beginTime" placeholder="请选择开始时间" readonly class="layui-input" autocomplete="off">
+    </div>
+    <div class="layui-input-inline">
+      <input type="text" id="endTime" placeholder="请选择结束时间" readonly class="layui-input" autocomplete="off">
+    </div>
+  </div>
+  <script type="text/javascript">
+      layui.config({
+          base: '../js/'
+      }).use(['laydate', 'util'], function () {
+          var $ = layui.jquery, laydate = layui.laydate, util = layui.util;
+          var dateConfig = $('#date-config');
+          var initDate = dateConfig.attr('date-init'), dateDescription = dateConfig.attr('date-description');
+          initDate = initDate === undefined || initDate === 'true';
+          dateDescription = (dateDescription === undefined || dateDescription === '') ? '时间' : dateDescription;
+          $('.date-description').html(dateDescription);
+          var initBeginTime = '', initEndTime = '', initBtns = ['clear', 'now', 'confirm'];
+          if (initDate) {
+              var d = new Date();
+              initBeginTime = d.getFullYear() + '-' + util.digit(d.getMonth() + 1) + '-' + util.digit(d.getDate()) + ' 00:00:00';
+              initEndTime = d.getFullYear() + '-' + util.digit(d.getMonth() + 1) + '-' + util.digit(d.getDate()) + ' 23:59:59';
+              initBtns = ['now', 'confirm'];
+          }
+          // 日期时间选择器
+          laydate.render({
+              elem: '#beginTime',
+              trigger: 'click',
+              type: 'datetime',
+              format: 'yyyy-MM-dd HH:mm:ss',
+              value: initBeginTime,
+              theme: 'grid',
+              btns: initBtns
+          });
+          laydate.render({
+              elem: '#endTime',
+              trigger: 'click',
+              type: 'datetime',
+              format: 'yyyy-MM-dd HH:mm:ss',
+              value: initEndTime,
+              theme: 'grid',
+              btns: initBtns
+          });
+      });
+  </script>
+</div>
+
+<div th:fragment="date">
+  <div class="layui-inline">
+    <label class="layui-form-label date-description">日期</label>
+    <div class="layui-input-inline" style="width: 120px;">
+      <input type="text" id="beginDate" placeholder="请选择开始日期" readonly class="layui-input" autocomplete="off">
+    </div>
+    <div class="layui-input-inline" style="width: 120px;">
+      <input type="text" id="endDate" placeholder="请选择结束日期" readonly class="layui-input" autocomplete="off">
+    </div>
+  </div>
+  <script type="text/javascript">
+      layui.config({
+          base: '../js/'
+      }).use(['laydate', 'util'], function () {
+          var $ = layui.jquery, laydate = layui.laydate, util = layui.util;
+          var dateConfig = $('#date-config');
+          var initDate = dateConfig.attr('date-init'), dateDescription = dateConfig.attr('date-description');
+          initDate = initDate === undefined || initDate === 'true';
+          dateDescription = (dateDescription === undefined || dateDescription === '') ? '日期' : dateDescription;
+          $('.date-description').html(dateDescription);
+          var initBeginDate = '', initEndDate = '', initBtns = ['clear', 'now', 'confirm'];
+          if (initDate) {
+              var d = new Date();
+              initBeginDate = d.getFullYear() + '-' + util.digit(d.getMonth() + 1) + '-' + util.digit(d.getDate());
+              initEndDate = d.getFullYear() + '-' + util.digit(d.getMonth() + 1) + '-' + util.digit(d.getDate());
+              initBtns = ['now', 'confirm'];
+          }
+
+          // 日期时间选择器
+          laydate.render({
+              elem: '#beginDate',
+              trigger: 'click',
+              type: 'date',
+              format: 'yyyy-MM-dd',
+              value: initBeginDate,
+              theme: 'grid',
+              btns: initBtns
+          });
+          laydate.render({
+              elem: '#endDate',
+              trigger: 'click',
+              type: 'date',
+              format: 'yyyy-MM-dd',
+              value: initEndDate,
+              theme: 'grid',
+              btns: initBtns
+          });
+      });
+  </script>
+</div>

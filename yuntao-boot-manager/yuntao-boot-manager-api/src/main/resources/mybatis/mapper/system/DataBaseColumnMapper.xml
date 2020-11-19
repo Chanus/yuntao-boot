@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chanus.yuntao.boot.manager.mapper.DataBaseColumnMapper">
+  <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from information_schema.columns
+    <where>
+      <if test="tableSchema != null">
+        and table_schema = #{tableSchema,jdbcType=VARCHAR}
+      </if>
+      <if test="tableName != null">
+        and table_name = #{tableName,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  
+  <select id="list" parameterType="java.util.Map" resultType="com.chanus.yuntao.boot.manager.model.DataBaseColumn">
+    select 
+    table_schema, table_name, column_name, column_default, is_nullable nullable, character_set_name, collation_name, data_type, column_type, column_comment, column_key, extra
+    from information_schema.columns
+    <where>
+      <if test="tableSchema != null">
+        and table_schema = #{tableSchema,jdbcType=VARCHAR}
+      </if>
+      <if test="tableName != null">
+        and table_name = #{tableName,jdbcType=VARCHAR}
+      </if>
+    </where>
+    order by ordinal_position
+    <if test="pagination == true">
+      limit #{start,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

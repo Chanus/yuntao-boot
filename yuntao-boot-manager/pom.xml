@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <modules>
+    <module>yuntao-boot-manager-api</module>
+    <module>yuntao-boot-manager-web</module>
+    <module>yuntao-boot-manager-start</module>
+  </modules>
+  <parent>
+    <groupId>com.chanus.yuntaoboot</groupId>
+    <artifactId>yuntao-boot</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>yuntao-boot-manager</artifactId>
+  <packaging>pom</packaging>
+  <name>${project.artifactId}</name>
+  <description>云道管理系统</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.chanus.yuntaoboot</groupId>
+      <artifactId>yuntao-boot-framework</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+</project>

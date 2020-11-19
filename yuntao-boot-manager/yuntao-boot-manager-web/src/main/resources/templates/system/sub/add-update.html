@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body>
+    <div class="pd-5">
+      <form class="layui-form layui-form-pane">
+        <input type="hidden" name="id" th:value="${operator.id }" class="layui-input" autocomplete="off">
+        <div class="layui-form-item">
+          <label class="layui-form-label">子账号<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="operatorNo" required th:if="${cmd } eq 'add'" lay-verify="letternumline" lay-data-length="3-16" lay-null-msg="请输入子账号" lay-error-msg="子账号由3-16位字母数字下划线组成" placeholder="请输入子账号" class="layui-input" autocomplete="off">
+            <input type="text" name="operatorNo" readonly th:if="${cmd } eq 'update'" th:value="${operator.operatorNo }" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">账号名称<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="operatorName" required lay-verify="required" th:value="${operator.operatorName }" placeholder="请输入子账号名称" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div th:if="${cmd } eq 'add' and ${session.loginUser.roleCode } eq '0'" class="layui-form-item">
+          <label class="layui-form-label">主账号<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="masterNo" required lay-verify="letternumline" lay-data-length="3-16" lay-null-msg="请输入主账号" lay-error-msg="主账号由3-16位字母数字下划线组成" th:value="${session.loginUser.loginNo }" placeholder="请输入主账号" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <th:block th:if="${cmd } eq 'add'">
+          <div class="layui-form-item">
+            <label class="layui-form-label">密码<span class="red">*</span></label>
+            <div class="layui-input-block">
+              <input type="password" name="operatorPassword" required lay-verify="password" lay-data-length="6-16" lay-null-msg="请输入密码" lay-error-msg="密码为6-16位非空字符" placeholder="请输入密码" class="layui-input" autocomplete="off">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">确认密码<span class="red">*</span></label>
+            <div class="layui-input-block">
+              <input type="password" name="operatorPassword2" required lay-verify="password" lay-recheck="operatorPassword" lay-data-length="6-16" lay-null-msg="请再次输入密码" lay-error-msg="密码为6-16位非空字符" placeholder="请再次输入密码" class="layui-input" autocomplete="off">
+            </div>
+          </div>
+        </th:block>
+        <div th:if="${cmd } eq 'update'" class="layui-form-item">
+          <label class="layui-form-label">主账号</label>
+          <div class="layui-input-block">
+            <input type="text" name="masterNo" readonly th:value="${operator.masterNo }" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">邮箱账号</label>
+          <div class="layui-input-block">
+            <input type="text" name="email" lay-verify="email" lay-ignore="ignore" th:value="${operator.email }" placeholder="请输入子账号邮箱账号" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">电话号码</label>
+          <div class="layui-input-block">
+            <input type="text" name="tel" th:value="${operator.tel }" placeholder="请输入子账号电话号码" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item" pane>
+          <label class="layui-form-label">状态<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="radio" name="validStatus" lay-verify="mustradio" value="1" title="启用" th:checked="${operator.validStatus eq null } or ${operator.validStatus } eq '1'">
+            <input type="radio" name="validStatus" value="0" title="停用" th:checked="${operator.validStatus } eq '0'">
+          </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">备注</label>
+          <div class="layui-input-block">
+            <textarea name="remark" th:text="${operator.remark }" placeholder="请输入备注" class="layui-textarea"></textarea>
+          </div>
+        </div>
+        <div class="layui-form-item text-c">
+          <div class="layui-inline">
+            <div class="layui-inline" th:switch="${ cmd }">
+              <th:block th:case="'add'">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="add">添加</button>
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="addAgain">保存并添加下一个</button>
+              </th:block>
+              <th:block th:case="'update'">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="update">确定</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              </th:block>
+              <span class="layui-btn layui-btn-primary" id="cancel">取消</span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <th:block th:include="public :: footer"/>
+    <script type="text/javascript" th:src="@{/js/system/sub.js?v=1.0.0.1}"></script>
+  </body>
+</html>

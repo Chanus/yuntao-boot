@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body>
+    <div class="pd-5">
+      <form class="layui-form layui-form-pane">
+        <input type="hidden" name="orgParentId" th:if="${cmd } eq 'add'" th:value="${orgParentId }" class="layui-input" autocomplete="off">
+        <input type="hidden" name="orgId" th:if="${cmd } eq 'update'" th:value="${organization.orgId }" class="layui-input" autocomplete="off">
+        <div class="layui-form-item">
+          <label class="layui-form-label">组织代码<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="orgCode" required lay-verify="required" th:value="${organization.orgCode }" placeholder="请输入组织代码" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">组织名称<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="orgName" required lay-verify="required" th:value="${organization.orgName }" placeholder="请输入组织名称" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">组织简称</label>
+          <div class="layui-input-block">
+            <input type="text" name="orgShortName" th:value="${organization.orgShortName }" placeholder="请输入组织简称" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">组织全称</label>
+          <div class="layui-input-block">
+            <input type="text" name="orgLongName" th:value="${organization.orgLongName }" placeholder="请输入组织全称" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">组织地址</label>
+          <div class="layui-input-block">
+            <input type="text" name="orgLocation" th:value="${organization.orgLocation }" placeholder="请输入组织地址" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">联系方式</label>
+          <div class="layui-input-block">
+            <input type="text" name="orgPhone" th:value="${organization.orgPhone }" placeholder="请输入组织联系方式" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item" pane>
+          <label class="layui-form-label">状态<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="radio" name="validStatus" lay-verify="mustradio" value="1" title="启用" th:checked="${organization.validStatus eq null } or ${organization.validStatus } eq '1'">
+            <input type="radio" name="validStatus" value="0" title="停用" th:checked="${organization.validStatus } eq '0'">
+          </div>
+        </div>
+        <div class="layui-form-item text-c">
+          <div class="layui-inline">
+            <div class="layui-inline" th:switch="${ cmd }">
+              <th:block th:case="'add'">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="add">添加</button>
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="addAgain">保存并添加下一个</button>
+              </th:block>
+              <th:block th:case="'update'">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="update">确定</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              </th:block>
+              <span class="layui-btn layui-btn-primary" id="cancel">取消</span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <th:block th:include="public :: footer"/>
+    <script type="text/javascript" th:src="@{/js/system/organization.js?v=1.0.0.1}"></script>
+  </body>
+</html>

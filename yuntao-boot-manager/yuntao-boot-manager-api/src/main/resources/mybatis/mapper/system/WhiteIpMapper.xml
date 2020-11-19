@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chanus.yuntao.boot.manager.mapper.WhiteIpMapper">
+  <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from sys_white_ip
+    <where>
+      <if test="validStatus != null">
+        valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+      <if test="fixedStatus != null">
+        and fixed_status = #{fixedStatus,jdbcType=CHAR}
+      </if>
+      <if test="whiteIp != null">
+        and FIND_IN_SET(#{whiteIp,jdbcType=VARCHAR},white_ip)
+      </if>
+      <if test="loginNo != null">
+        and (FIND_IN_SET(#{loginNo,jdbcType=VARCHAR},login_no) or login_no is NULL or login_no = '')
+      </if>
+    </where>
+  </select>
+  
+  <select id="list" parameterType="java.util.Map" resultType="com.chanus.yuntao.boot.manager.model.WhiteIp">
+    select
+    id, white_ip, login_no, remark, fixed_status, valid_status, gmt_create, gmt_modified
+    from sys_white_ip
+    <where>
+      <if test="validStatus != null">
+        valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+      <if test="fixedStatus != null">
+        and fixed_status = #{fixedStatus,jdbcType=CHAR}
+      </if>
+      <if test="whiteIp != null">
+        and FIND_IN_SET(#{whiteIp,jdbcType=VARCHAR},white_ip)
+      </if>
+      <if test="loginNo != null">
+        and (FIND_IN_SET(#{loginNo,jdbcType=VARCHAR},login_no) or login_no is NULL or login_no = '')
+      </if>
+    </where>
+    <if test="pagination == true">
+      limit #{start,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getFixedWhiteIps" parameterType="java.lang.String" resultType="java.lang.String">
+    select GROUP_CONCAT(white_ip separator ',') from sys_white_ip
+    <where>
+      valid_status = '1' and fixed_status = '1'
+      and (FIND_IN_SET(#{loginNo,jdbcType=VARCHAR},login_no) or login_no is NULL or login_no = '')
+    </where>
+  </select>
+</mapper>

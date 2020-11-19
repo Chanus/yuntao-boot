@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body>
+    <div class="pd-5">
+      <!-- 搜索条件 -->
+      <div class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <input type="hidden" id="mpId" th:value="${mpId }" class="layui-input" autocomplete="off">
+            <label class="layui-form-label">类名</label>
+            <div class="layui-input-inline" style="width: 500px;">
+              <select name="className" id="className" lay-filter="className" lay-search>
+                <option value="">选择类名</option>
+                <option th:each="clazz : ${clazzs }" th:value="${clazz }" th:text="${clazz }"></option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">URL</label>
+            <div class="layui-input-inline" style="width: 500px;">
+              <select name="url" id="url" lay-filter="url" lay-search>
+                <option value="">选择URL</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-inline" style="width: 100%; text-align: center;">
+            <button id="add" class="layui-btn layui-btn-normal"><i class="layui-icon layui-icon-add-circle-fine"></i>添加</button>
+            <button id="delete" class="layui-btn layui-btn-danger"><i class="layui-icon layui-icon-delete"></i>删除</button>
+          </div>
+        </div>
+      </div>
+      <!-- 数据展示 -->
+      <table class="layui-hide" id="datas" lay-filter="datas"></table>
+    </div>
+    <!-- 自定义模板 -->
+    <script type="text/html" id="toolbar">
+      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+
+    <th:block th:include="public :: footer"/>
+    <script type="text/javascript" th:src="@{/js/system/module-power-method.js?v=1.0.0.1}"></script>
+  </body>
+</html>

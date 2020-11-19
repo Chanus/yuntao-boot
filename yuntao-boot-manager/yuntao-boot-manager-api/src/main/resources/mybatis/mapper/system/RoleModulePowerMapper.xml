@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chanus.yuntao.boot.manager.mapper.RoleModulePowerMapper">
+  <resultMap id="BaseResultMap" type="com.chanus.yuntao.boot.manager.model.RoleModulePower">
+    <id column="rmp_id" jdbcType="INTEGER" property="rmpId" />
+    <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
+    <result column="module_code" jdbcType="VARCHAR" property="moduleCode" />
+    <result column="power_item" jdbcType="VARCHAR" property="powerItem" />
+    <result column="sub_no" jdbcType="VARCHAR" property="subNo" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  
+  <delete id="deleteByRoleCode" parameterType="java.lang.String">
+    delete from sys_role_module_power where role_code = #{roleCode,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteBySubNo" parameterType="java.lang.String">
+    delete from sys_role_module_power where sub_no = #{subNo,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into sys_role_module_power (role_code, module_code, power_item, sub_no)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.roleCode,jdbcType=VARCHAR}, #{item.moduleCode,jdbcType=VARCHAR}, #{item.powerItem,jdbcType=VARCHAR}, #{item.subNo,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+</mapper>

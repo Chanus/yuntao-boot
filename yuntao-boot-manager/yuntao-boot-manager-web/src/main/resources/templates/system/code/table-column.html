@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body>
+    <div class="pd-5">
+      <table class="layui-table" lay-even lay-size="sm">
+        <thead>
+          <tr class="text-c">
+            <th>字典名称</th>
+            <th>字典类型</th>
+            <th>能否为空</th>
+            <th>字符集</th>
+            <th>字符序</th>
+            <th>默认值</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="column : ${columns }" class="text-c">
+            <td th:text="${column.columnName }"></td>
+            <td th:text="${column.columnType }"></td>
+            <td th:text="${column.nullable }"></td>
+            <td th:text="${column.characterSetName }"></td>
+            <td th:text="${column.collationName }"></td>
+            <td th:switch="${column.columnDefault }">
+              <div th:case="null">(NULL)</div>
+              <div th:case="''">EMPTY STRING</div>
+              <div th:case="*" th:text="${column.columnDefault }"></div>
+            </td>
+            <td th:text="${column.columnComment }"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <th:block th:include="public :: footer"/>
+  </body>
+</html>

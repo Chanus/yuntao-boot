@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body>
+    <div class="pd-5">
+      <form class="layui-form layui-form-pane">
+        <input type="hidden" name="id" th:value="${scheduleTrigger.id }" class="layui-input" autocomplete="off">
+        <input type="hidden" name="jobId" th:value="${scheduleTrigger.jobId }" class="layui-input" autocomplete="off">
+        <div class="layui-form-item">
+          <label class="layui-form-label">触发器名称<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="triggerName" required lay-verify="required" th:value="${scheduleTrigger.triggerName }" placeholder="请输入触发器名称" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">触发器组<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="triggerGroup" required lay-verify="required" th:value="${scheduleTrigger.triggerGroup }" placeholder="请输入触发器组" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">Cron表达式<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="text" name="triggerCron" required lay-verify="required" th:value="${scheduleTrigger.triggerCron }" placeholder="请输入Cron表达式" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">开始时间</label>
+          <div class="layui-input-block">
+            <input type="text" id="triggerStartTimeStr" name="triggerStartTimeStr" th:value="${scheduleTrigger.triggerStartTimeStr }" placeholder="请输入开始时间" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">结束时间</label>
+          <div class="layui-input-block">
+            <input type="text" id="triggerEndTimeStr" name="triggerEndTimeStr" th:value="${scheduleTrigger.triggerEndTimeStr }" placeholder="请输入结束时间" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">属性配置</label>
+          <div class="layui-input-block">
+            <textarea name="triggerData" th:text="${scheduleTrigger.triggerData }" placeholder="请输入触发器属性配置，数据为json格式" class="layui-textarea"></textarea>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">优先级</label>
+          <div class="layui-input-block">
+            <input type="text" name="priority" required lay-verify="integer" lay-ignore="ignore" lay-error-msg="优先级必须为整数" th:value="${scheduleTrigger.priority }" placeholder="请输入优先级" class="layui-input" autocomplete="off">
+          </div>
+        </div>
+        <div class="layui-form-item" pane>
+          <label class="layui-form-label">状态<span class="red">*</span></label>
+          <div class="layui-input-block">
+            <input type="radio" name="validStatus" lay-verify="mustradio" value="1" title="启用" th:checked="${scheduleTrigger.validStatus } eq '1'">
+            <input type="radio" name="validStatus" value="0" title="停用" th:checked="${scheduleTrigger.validStatus eq null } or ${scheduleTrigger.validStatus } eq '0'">
+          </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">备注</label>
+          <div class="layui-input-block">
+            <textarea name="remark" th:text="${scheduleTrigger.remark }" placeholder="请输入备注" class="layui-textarea"></textarea>
+          </div>
+        </div>
+        <div class="layui-form-item text-c">
+          <div class="layui-inline">
+            <div class="layui-inline" th:switch="${ cmd }">
+              <th:block th:case="'add'">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="add">添加</button>
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="addAgain">保存并添加下一个</button>
+              </th:block>
+              <th:block th:case="'update'">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="update">确定</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              </th:block>
+              <span class="layui-btn layui-btn-primary" id="cancel">取消</span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <th:block th:include="public :: footer"/>
+    <script type="text/javascript" th:src="@{/js/system/job-trigger.js?v=1.0.0.1}"></script>
+    <script type="text/javascript">
+        layui.use('laydate', function() {
+            var laydate = layui.laydate;
+            // 日期时间选择器
+            laydate.render({
+                elem : '#triggerStartTimeStr',
+                trigger: 'click',
+                type: 'datetime',
+                format: 'yyyy-MM-dd HH:mm:ss',
+                theme: 'grid',
+                btns: ['clear', 'now', 'confirm']
+            });
+            laydate.render({
+                elem : '#triggerEndTimeStr',
+                trigger: 'click',
+                type: 'datetime',
+                format: 'yyyy-MM-dd HH:mm:ss',
+                theme: 'grid',
+                btns: ['clear', 'now', 'confirm']
+            });
+        });
+    </script>
+  </body>
+</html>

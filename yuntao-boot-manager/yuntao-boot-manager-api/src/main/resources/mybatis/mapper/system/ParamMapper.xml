@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chanus.yuntao.boot.manager.mapper.ParamMapper">
+  <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from sys_param
+    <where>
+      <if test="paramCode != null">
+        and param_code = #{paramCode,jdbcType=VARCHAR}
+      </if>
+      <if test="validStatus != null">
+        and valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+      <if test='loginRoleCode != null and loginRoleCode != "0"'>
+        and FIND_IN_SET(#{loginRoleCode,jdbcType=VARCHAR},if(modified_role_code is not null and modified_role_code &lt;&gt; '', modified_role_code, #{loginRoleCode,jdbcType=VARCHAR}))
+      </if>
+    </where>
+  </select>
+  
+  <select id="list" parameterType="java.util.Map" resultType="com.chanus.yuntao.boot.manager.model.Param">
+    select
+    id, param_code, param_data, remark, valid_status, modified_role_code, priority, gmt_create, gmt_modified
+    from sys_param
+    <where>
+      <if test="paramCode != null">
+        and param_code = #{paramCode,jdbcType=VARCHAR}
+      </if>
+      <if test="validStatus != null">
+        and valid_status = #{validStatus,jdbcType=CHAR}
+      </if>
+      <if test='loginRoleCode != null and loginRoleCode != "0"'>
+        and FIND_IN_SET(#{loginRoleCode,jdbcType=VARCHAR},if(modified_role_code is not null and modified_role_code &lt;&gt; '', modified_role_code, #{loginRoleCode,jdbcType=VARCHAR}))
+      </if>
+    </where>
+    order by priority asc
+    <if test="pagination == true">
+      limit #{start,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <update id="priority" parameterType="java.util.Map">
+    update sys_param t1, sys_param t2, (select
+    <choose>
+      <when test='direction == "up"'>max(priority) priority</when>
+      <otherwise>min(priority) priority</otherwise>
+    </choose>
+    from sys_param
+    <if test='direction != "top"'>
+      <where>
+        <choose>
+          <when test='direction == "up"'>priority &lt; #{priority}</when>
+          <otherwise>priority &gt; #{priority}</otherwise>
+        </choose>
+      </where>
+    </if>
+    ) t3 set
+    <choose>
+      <when test='direction == "top"'>t1.priority = t3.priority, t2.priority = t2.priority + 1</when>
+      <otherwise>t1.priority = t2.priority, t2.priority = t1.priority</otherwise>
+    </choose>
+    <where>
+      t1.priority = #{priority}
+      <choose>
+        <when test='direction == "top"'>and t2.priority &lt; #{priority}</when>
+        <otherwise>and t2.priority = t3.priority</otherwise>
+      </choose>
+    </where>
+  </update>
+</mapper>

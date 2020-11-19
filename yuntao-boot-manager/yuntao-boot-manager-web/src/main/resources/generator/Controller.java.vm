@@ -1,0 +1,127 @@
+package ${controllerPackage}.controller;
+
+import com.chanus.yuntao.boot.framework.base.controller.BaseController;
+import com.chanus.yuntao.boot.manager.annotation.Log;
+import com.chanus.yuntao.boot.manager.common.ModulePowerUtils;
+import com.chanus.yuntao.boot.manager.common.enums.LogTypeEnum;
+import com.chanus.yuntao.utils.core.lang.Message;
+import com.chanus.yuntao.utils.core.lang.Page;
+import ${serverPackage}.model.${className};
+import ${serverPackage}.service.${className}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Arrays;
+
+/**
+ * ${moduleName}
+ *
+ * @author ${author}
+ * @date ${dateTime}
+ * @since ${since}
+ */
+@Controller
+@RequestMapping("${pathName}")
+public class ${className}Controller extends BaseController {
+    @Autowired
+    private ${className}Service ${classname}Service;
+#if("$!moduleId" != "")
+
+    private final String currentModuleCode = "${moduleCode}";
+#end
+
+    /**
+     * 首页
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "main")
+    public String main(Model model) {
+        model.addAttribute("powers", ModulePowerUtils.getPowers(getSession(), currentModuleCode));
+        return "${pathName}/list";
+    }
+
+    /**
+     * 分页查询
+     *
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "list", produces = "application/json; charset=utf-8")
+    public Page<${className}> list() {
+        return ${classname}Service.listPagination(getParams());
+    }
+
+    /**
+     * 跳转到添加页面
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "add")
+    public String add(Model model) {
+        model.addAttribute("${classname}", new ${className}());
+        model.addAttribute("cmd", "add");
+        return "${pathName}/add-update";
+    }
+
+    /**
+     * 添加
+     *
+     * @param ${classname}
+     * @return
+     */
+    @ResponseBody
+    @Log(module = currentModuleCode, logType = LogTypeEnum.INSERT)
+    @PostMapping(value = "add", produces = "application/json; charset=utf-8")
+    public Message add(${className} ${classname}) {
+        return ${classname}Service.insert(${classname});
+    }
+
+    /**
+     * 跳转到修改页面
+     *
+     * @param ${pk.attributename}    主键
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "update")
+    public String update(${pk.attributeType} ${pk.attributename}, Model model) {
+        model.addAttribute("${classname}", ${classname}Service.get(${pk.attributename}));
+        model.addAttribute("cmd", "update");
+        return "${pathName}/add-update";
+    }
+
+    /**
+     * 修改
+     *
+     * @param ${classname}
+     * @return
+     */
+    @ResponseBody
+    @Log(module = currentModuleCode, logType = LogTypeEnum.UPDATE)
+    @PostMapping(value = "update", produces = "application/json; charset=utf-8")
+    public Message update(${className} ${classname}) {
+        return ${classname}Service.update(${classname});
+    }
+
+    /**
+     * 删除/批量删除
+     *
+     * @param ids 被删除记录主键数组
+     * @return
+     */
+    @ResponseBody
+    @Log(module = currentModuleCode, logType = LogTypeEnum.DELETE)
+    @PostMapping(value = "delete", produces = "application/json; charset=utf-8")
+    public Message delete(${pk.attributeType}[] ids) {
+        return ${classname}Service.delete(Arrays.asList(ids));
+    }
+
+}
