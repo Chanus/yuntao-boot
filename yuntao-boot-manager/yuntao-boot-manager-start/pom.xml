@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.chanus.yuntaoboot</groupId>
     <artifactId>yuntao-boot-manager</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
   </parent>
 
   <artifactId>yuntao-boot-manager-start</artifactId>
@@ -18,12 +18,23 @@
       <artifactId>yuntao-boot-manager-web</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!--SpringBoot 热部署配置 -->
+    <!-- SpringBoot 热部署配置 -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <scope>runtime</scope>
       <optional>true</optional>
+    </dependency>
+    <!-- 单元测试 -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
