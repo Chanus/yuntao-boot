@@ -11,6 +11,10 @@
   <springProperty scope="context" name="LOG_HOME" source="logging.file.path" defaultValue="/logs"/>
   <!-- 定义日志文件的名称 -->
   <springProperty scope="context" name="LOG_FILE_NAME" source="logging.file.name" defaultValue="log"/>
+  <!-- 日志文件保留天数 -->
+  <springProperty scope="context" name="MAX_HISTORY" source="logging.logback.rollingpolicy.max-history" defaultValue="7"/>
+  <!-- 当天的日志大小超过指定值时，压缩日志并保存 -->
+  <springProperty scope="context" name="MAX_FILE_SIZE" source="logging.logback.rollingpolicy.max-file-size" defaultValue="10MB"/>
 
   <!-- 负责写日志，控制台日志 -->
   <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
@@ -34,10 +38,12 @@
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- 每天生成一个日志文件，保存30天的日志文件 - 如果隔一段时间没有输出日志，前面过期的日志不会被删除，只有再重新打印日志的时候，会触发删除过期日志的操作。 -->
       <!-- fileNamePattern 文件格式不正确则无法产生日志文件 -->
-      <fileNamePattern>${LOG_HOME}/${LOG_FILE_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-      <maxHistory>30</maxHistory>
+      <fileNamePattern>${LOG_HOME}/${LOG_FILE_NAME}_%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+      <!-- 日志文件保留天数 -->
+      <maxHistory>${MAX_HISTORY}</maxHistory>
+      <!-- 当天的日志大小超过 128M 时，压缩日志并保存 -->
       <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-        <maxFileSize>128MB</maxFileSize>
+        <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
       </TimeBasedFileNamingAndTriggeringPolicy>
     </rollingPolicy>
   </appender>
@@ -60,11 +66,12 @@
     <!-- 每天生成一个日志文件，保存30天的日志文件 - 如果隔一段时间没有输出日志，前面过期的日志不会被删除，只有再重新打印日志的时候，会触发删除过期日志的操作。 -->
     <!-- fileNamePattern文件格式不正确则无法产生日志文件 -->
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>${LOG_HOME}/error/${LOG_FILE_NAME}_error_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-      <!--日志文件保留天数-->
-      <maxHistory>30</maxHistory>
+      <fileNamePattern>${LOG_HOME}/error/${LOG_FILE_NAME}_error_%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+      <!-- 日志文件保留天数 -->
+      <maxHistory>${MAX_HISTORY}</maxHistory>
+      <!-- 当天的日志大小超过 128M 时，压缩日志并保存 -->
       <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-        <maxFileSize>128MB</maxFileSize>
+        <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
       </TimeBasedFileNamingAndTriggeringPolicy>
     </rollingPolicy>
   </appender>

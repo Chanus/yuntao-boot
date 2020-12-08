@@ -89,8 +89,9 @@
         // Ensure an array
         var files = (settings.name && settings.name.constructor === Array) ? settings.name : [settings.name];
 
-        // A locale is at least a language code which means at least two files per name.
-        settings.totalFiles = files.length * 2;
+        // A locale is at least a language code which means at least two files per name. If
+        // we also have a country code, thats an extra file per name.
+        settings.totalFiles = (files.length * 2) + ((settings.language.length >= 5) ? files.length : 0);
         if (settings.debug) {
             debug('totalFiles: ' + settings.totalFiles);
         }
@@ -98,9 +99,15 @@
         settings.filesLoaded = 0;
 
         files.forEach(function (file) {
+            var defaultFileName, i18nFileName, fileNames;
+            // 1. load base (eg, Messages.properties)
+            defaultFileName = settings.path + file + '.properties';
+            // 2. with language code (eg, Messages_pt.properties)
             var languageCode = settings.language.substring(0, settings.language.length >= 5 ? 5 : 2);
-            var languageFileName = settings.path + file + '_' + languageCode + '.properties';
-            loadAndParseFiles([languageFileName], settings);
+            i18nFileName = settings.path + file + '_' + languageCode + '.properties';
+            // 3. with language code and country code (eg, Messages_pt_BR.properties)
+            fileNames = [defaultFileName, i18nFileName];
+            loadAndParseFiles(fileNames, settings);
         });
 
         // call callback
@@ -436,7 +443,7 @@
     }
 
     /** Make sure namespace exists (for keys with dots in name) */
-    // key parts that start with numbers quietly fail. i.e. month.short.1=Jan
+    // TODO key parts that start with numbers quietly fail. i.e. month.short.1=Jan
     function checkKeyNamespace(key) {
 
         var regDot = /\./;
