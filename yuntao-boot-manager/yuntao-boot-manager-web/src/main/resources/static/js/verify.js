@@ -184,12 +184,12 @@ layui.config({
         },
         checkNumberDigits: function (value, item) {
             // 验证数字范围
-            var min = $(item).attr('lay-range-min');// 最小值
-            if (value < min)
+            var min = Number($(item).attr('lay-range-min'));// 最小值
+            if (Number(value) < min)
                 return verify.errorMsg(item, '数值不能小于' + min);
 
-            var max = $(item).attr('lay-range-max');// 最大值
-            if (value > max)
+            var max = Number($(item).attr('lay-range-max'));// 最大值
+            if (Number(value) > max)
                 return verify.errorMsg(item, '数值不能大于' + max);
 
             var b = true, v = value.split('.');
