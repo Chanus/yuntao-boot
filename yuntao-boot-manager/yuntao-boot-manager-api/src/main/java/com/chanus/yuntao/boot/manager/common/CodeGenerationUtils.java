@@ -112,7 +112,7 @@ public class CodeGenerationUtils {
      */
     public static List<String> getTemplates() {
         List<String> templates = new ArrayList<>();
-        templates.add("generator/model.java.vm");
+        templates.add("generator/Model.java.vm");
         templates.add("generator/Mapper.java.vm");
         templates.add("generator/Mapper.xml.vm");
         templates.add("generator/Service.java.vm");
@@ -291,7 +291,7 @@ public class CodeGenerationUtils {
         String javaServerPath = apiRootPath + "java" + File.separator + serverPackage;
         String javaControllerPath = webRootPath + "java" + File.separator + controllerPackage;
 
-        if (template.contains("model.java.vm")) {
+        if (template.contains("Model.java.vm")) {
             return javaServerPath + "model" + File.separator + className + ".java";
         }
 

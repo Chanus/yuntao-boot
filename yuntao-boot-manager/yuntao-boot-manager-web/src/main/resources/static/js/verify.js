@@ -9,6 +9,8 @@
  *    lay-recheck    检查两次密码输入是否一致时使用，用来指定需要比较的另外一个表单元素。如：lay-recheck="password1"，那么它就会拿当前元素的值跟该表单下，name为"password1"的元素比较
  *    lay-integer-digits    检验浮点数时整数部分的位数，lay-integer-digits="6"表示固定长度6，lay-integer-digits="1-6"表示长度在1到6之间
  *    lay-fraction-digits    检验浮点数时小数部分的位数，lay-fraction-digits="2"表示固定长度2，lay-fraction-digits="1-2"表示长度在1到2之间
+ *    lay-range-min    检验数字的最小值
+ *    lay-range-max    检验数字的最大值
  *    lay-separator    检验输入内容是否以指定的分隔符分隔
  *
  * @name    verify.js
@@ -91,16 +93,22 @@ layui.config({
         integer: function (value, item) {
             var r = verify.validate(value, item, 'integer');
             if (r !== true) return r;
+            var s = verify.checkNumberDigits(value, item);
+            if (s !== true) return s;
         },
         // 校验数字，允许0和正整数
         pinteger: function (value, item) {
             var r = verify.validate(value, item, 'pinteger');
             if (r !== true) return r;
+            var s = verify.checkNumberDigits(value, item);
+            if (s !== true) return s;
         },
         // 校验数字，允许0和负整数
         ninteger: function (value, item) {
             var r = verify.validate(value, item, 'ninteger');
             if (r !== true) return r;
+            var s = verify.checkNumberDigits(value, item);
+            if (s !== true) return s;
         },
         // 校验数字字符串
         digit: function (value, item) {
@@ -175,6 +183,15 @@ layui.config({
             return true;
         },
         checkNumberDigits: function (value, item) {
+            // 验证数字范围
+            var min = $(item).attr('lay-range-min');// 最小值
+            if (value < min)
+                return verify.errorMsg(item, '数值不能小于' + min);
+
+            var max = $(item).attr('lay-range-max');// 最大值
+            if (value > max)
+                return verify.errorMsg(item, '数值不能大于' + max);
+
             var b = true, v = value.split('.');
             var i = v[0], f = v[1];
 
@@ -183,6 +200,8 @@ layui.config({
                 var digits = integerDigits.split('-');
                 b = digits[1] === undefined ? (i.length === parseInt(digits[0])) : (i.length >= parseInt(digits[0]) && i.length <= parseInt(digits[1]));
             }
+            if (!b)
+                return verify.errorMsg(item, '数值格式不正确');
             var fractionDigits = $(item).attr('lay-fraction-digits');// 小数部分位数
             if (!verify.isNull(fractionDigits)) {
                 var digits = fractionDigits.split('-');

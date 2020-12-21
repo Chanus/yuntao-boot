@@ -73,7 +73,9 @@ public class ${className} implements Serializable {
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
-    // $column.columnComment
+    /**
+     * $column.columnComment
+     */
 #if($column.dataType == 'datetime' || $column.dataType == 'timestamp')
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 #elseif($column.dataType == 'date')
@@ -93,16 +95,10 @@ public class ${className} implements Serializable {
 #end
 #foreach ($column in $columns)
 
-    /**
-     * 获取：${column.columnComment}
-     */
     public $column.attributeType get${column.attributeName}() {
         return $column.attributename;
     }
 
-    /**
-     * 设置：${column.columnComment}
-     */
     public void set${column.attributeName}($column.attributeType $column.attributename) {
 #if($column.attributeType == 'String')
         this.$column.attributename = $column.attributename == null ? null : ${column.attributename}.trim();
