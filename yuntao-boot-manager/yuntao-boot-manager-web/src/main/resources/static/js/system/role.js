@@ -74,39 +74,23 @@ layui.config({
     });
 
     // 增删改
-    var p0 = $('.layui-show', window.parent.document), p = p0.children()[p0.length - 1].contentWindow;
-    operations.id = 'id';
-    operations.addUrl = action_path + 'add';
-    // 确认添加时触发
-    form.on('submit(add)', function (data) {
-        operations.add('add', operations.addUrl, data.field, function () {
+    operations.config({
+        path: action_path,
+        commonAddFunc: function () {
             // 若添加角色，则刷新角色列表树
             p.init();
             // 刷新父页面表格数据
             p.reload();
-        });
-        return false;
-    });
-    // 确认保存并添加下一个时触发
-    form.on('submit(addAgain)', function (data) {
-        operations.add('addAgain', operations.addUrl, data.field, function () {
-            // 若添加角色，则刷新角色列表树
+        },
+        delFunc: function () {
+            // 若删除角色，则刷新角色列表树
             p.init();
-            // 刷新父页面表格数据
-            p.reload();
-        });
-        return false;
+        },
+        updateFunc: function () {
+            // 若编辑角色，则刷新角色列表树
+            p.init();
+        }
     });
-    operations.updateUrl = action_path + 'update';
-    operations.updateFunc = function () {
-        // 若编辑角色，则刷新角色列表树
-        p.init();
-    };
-    operations.delUrl = action_path + 'delete';
-    operations.delFunc = function () {
-        // 若删除角色，则刷新角色列表树
-        p.init();
-    };
 
     // 渲染角色菜单权限列表
     renderRoleModulePower = function (roleCode) {

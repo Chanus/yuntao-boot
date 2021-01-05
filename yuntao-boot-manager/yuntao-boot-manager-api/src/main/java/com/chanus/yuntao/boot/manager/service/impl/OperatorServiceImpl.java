@@ -45,7 +45,7 @@ public class OperatorServiceImpl extends BaseServiceImpl<OperatorMapper, Operato
 
     @Override
     public Message insert(Operator t) {
-        if (StringUtils.isNotBlank(loginUserViewMapper.getUserName(t.getOperatorNo())))
+        if (loginUserViewMapper.isExistUser(t.getOperatorNo()) != null)
             return Message.fail("账号已存在");
 
         if (StringUtils.isNotBlank(t.getOperatorPassword()))
@@ -56,7 +56,7 @@ public class OperatorServiceImpl extends BaseServiceImpl<OperatorMapper, Operato
             if (StringUtils.isBlank(t.getMasterNo()))
                 return Message.fail("主账号不能为空");
 
-            LoginUserView user = loginUserViewMapper.getUser(t.getMasterNo());
+            LoginUserView user = loginUserViewMapper.selectLoginUser(t.getMasterNo());
             if (user == null)
                 return Message.fail("主账号不存在");
             if (SystemConstants.ROLE_SUB_1.equals(user.getRoleCode()))

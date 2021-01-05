@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 登录用户接口实现
@@ -66,7 +67,7 @@ public class LoginUserServiceImpl implements LoginUserService {
             }
         }
 
-        LoginUserView loginUserView = loginUserViewMapper.login(loginNo);
+        LoginUserView loginUserView = loginUserViewMapper.selectLoginUser(loginNo);
         if (loginUserView == null)
             return Message.fail("当前用户不存在");
         if (Constants.STATUS_NO.equals(loginUserView.getValidStatus()))
@@ -120,7 +121,7 @@ public class LoginUserServiceImpl implements LoginUserService {
             }
         }
 
-        LoginUserView loginUserView = loginUserViewMapper.login(loginNo);
+        LoginUserView loginUserView = loginUserViewMapper.selectLoginUser(loginNo);
         if (loginUserView == null)
             return Message.fail("当前用户不存在");
         if (Constants.STATUS_NO.equals(loginUserView.getValidStatus()))
@@ -157,13 +158,17 @@ public class LoginUserServiceImpl implements LoginUserService {
     }
 
     @Override
-    public LoginUserView getUser(String loginNo) {
-        return loginUserViewMapper.getUser(loginNo);
+    public LoginUserView getLoginUser(String loginNo) {
+        return loginUserViewMapper.selectLoginUser(loginNo);
     }
 
     @Override
-    public LoginUserView getLoginUser(String loginNo) {
-        return loginUserViewMapper.login(loginNo);
+    public Map<String, Object> getUserByUserNo(String userNo) {
+        return loginUserViewMapper.selectUserByUserNo(userNo);
     }
 
+    @Override
+    public Map<String, Object> getUser(String column, String value) {
+        return loginUserViewMapper.selectUser(column, value);
+    }
 }

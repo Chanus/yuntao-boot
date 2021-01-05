@@ -1,9 +1,8 @@
 var reload, action_path = ctx + 'system/code/';
 layui.config({
     base: '../../js/'
-}).use(['table', 'popup', 'form', 'operations'], function () {
-    var $ = layui.jquery, table = layui.table, layer = layui.layer, popup = layui.popup, form = layui.form,
-        operations = layui.operations;
+}).use(['table', 'popup', 'form'], function () {
+    var $ = layui.jquery, table = layui.table, layer = layui.layer, popup = layui.popup, form = layui.form;
 
     // 渲染表格
     table.render({

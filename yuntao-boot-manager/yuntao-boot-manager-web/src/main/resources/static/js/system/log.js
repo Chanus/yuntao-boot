@@ -54,25 +54,12 @@ layui.config({
 
     // 清除日志
     $('#clear').on('click', function () {
-        layer.confirm('确定清除所有日志吗？', {icon: 3, title: '提示'}, function (index) {
-            $.ajax({
-                type: 'post',
-                url: action_path + 'clear',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.code === 0) {
-                        layer.msg(data.msg, {time: 1000}, function () {
-                            reload();
-                        });
-                    } else {
-                        layer.msg(data.msg, {icon: 2, anim: 6, time: 2000});
-                    }
-                },
-                error: function () {
-                    layer.msg('请求异常，操作失败', {icon: 2, anim: 6, time: 2000});
-                }
-            });
-            layer.close(index);
+        operations.confirm({
+            url: action_path + 'clear',
+            tips: '确定清除所有日志吗？',
+            success: function () {
+                reload();
+            }
         });
     });
 

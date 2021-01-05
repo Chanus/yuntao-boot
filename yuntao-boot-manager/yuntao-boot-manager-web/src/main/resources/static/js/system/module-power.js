@@ -127,8 +127,5 @@ layui.config({
     });
 
     // 增删改
-    var p0 = $('.layui-show', window.parent.document), p = p0.children()[p0.length - 1].contentWindow;
-    operations.id = 'mpId';
-    operations.updateUrl = action_path + 'update';
-    operations.delUrl = action_path + 'delete';
+    operations.config({path: action_path, id: 'mpId'});
 });

@@ -98,7 +98,9 @@ layui.config({
         var layEvent = obj.event; // 获得lay-event对应的值
         // var tr = obj.tr; // 获得当前行tr的DOM对象
         if (layEvent === 'del') {// 删除
-            operations.del({ids: [data.mpmId]}, action_path + 'method-delete', operations.delFunc);
+            operations.del({ids: [data.mpmId]}, action_path + 'method-delete', function () {
+                reload();
+            });
         }
     });
 
@@ -125,9 +127,7 @@ layui.config({
     });
 
     // 增删改
-    operations.id = 'mpmId';
-    operations.delUrl = action_path + 'method-delete';
-    operations.delFunc = function () {
+    operations.config({path: action_path, id: 'mpmId', delUrl: 'method-delete', delFunc: function () {
         reload();
-    }
+    }});
 });
