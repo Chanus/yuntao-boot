@@ -21,20 +21,21 @@ layui.define(['form', 'table'], function (exports) {
      * 默认配置信息
      */
     var defaults = {
-        path: '',
-        id: 'id',
-        addUrl: 'add',
-        commonAddFunc: function () {
-            p.reload();
+        windowLevel: 1,// 窗口层级，1为主页面，2为弹出层页面
+        path: '',// 请求基础路径
+        id: 'id',// 数据模型的主键属性名
+        addUrl: 'add',// 添加数据的请求地址
+        commonAddFunc: function () {// 添加数据成功后执行的公共方法
+            operations.parentWindow.reload();
         },
-        addFunc: null,
-        addAgainFunc: null,
-        delUrl: 'delete',
-        delFunc: null,
-        updateUrl: 'update',
-        updatePwdUrl: 'password',
-        updateFunc: null,
-        confirmUrl: ''
+        addFunc: null,// 添加数据成功后执行的方法
+        addAgainFunc: null,// 添加下一个数据成功后执行的方法
+        delUrl: 'delete',// 删除数据的请求地址
+        delFunc: null,// 删除数据成功后执行的方法
+        updateUrl: 'update',// 更新数据的请求地址
+        updatePwdUrl: 'password',// 修改密码的请求地址
+        updateFunc: null,// 更新数据成功后执行的方法
+        confirmUrl: ''// 询问请求的请求地址
     }
 
     var operations = {
@@ -43,6 +44,7 @@ layui.define(['form', 'table'], function (exports) {
          */
         config: function (options) {
             operations.settigs = $.extend(defaults, options);
+            operations.parentWindow = operations.settigs.windowLevel === 2 ? $('.layui-layer-content', window.parent.document).children()[0].contentWindow : p;
         },
 
         /**
@@ -71,14 +73,14 @@ layui.define(['form', 'table'], function (exports) {
                     layer.msg(e.msg, {icon: 1, time: 1000}, function () {
                         // 执行func
                         if (func && typeof func === 'function')
-                            func(e);
+                            func(fields, e);
                         if (type === 'add') {
                             if (addFunc && typeof addFunc === 'function')
-                                addFunc(e);
+                                addFunc(fields, e);
                             parent.layer.close(parent.layer.getFrameIndex(window.name));
                         } else if (type === 'addAgain') {
                             if (addAgainFunc && typeof addAgainFunc === 'function')
-                                addAgainFunc(e);
+                                addAgainFunc(fields, e);
                             $('.layui-form')[0].reset();
                         }
                     });
@@ -118,7 +120,7 @@ layui.define(['form', 'table'], function (exports) {
                                         $('.layui-laypage-btn')[0].click();
 
                                     if (func && typeof func === 'function')
-                                        func(data);
+                                        func(obj, data);
                                 });
                             } else {
                                 layer.msg(data.msg, {icon: 2, anim: 6, time: 2000});
@@ -149,7 +151,7 @@ layui.define(['form', 'table'], function (exports) {
                     layer.msg(data.msg, {icon: 1, time: 1000}, function () {
                         // 执行func
                         if (func && typeof func === 'function')
-                            func(data);
+                            func(fields, data);
                         // 刷新父页面表格数据并关闭弹出层
                         var layuiLaypageBtnClass = p ? $('.layui-laypage-btn', p.document)[0] : false;
                         if (layuiLaypageBtnClass)

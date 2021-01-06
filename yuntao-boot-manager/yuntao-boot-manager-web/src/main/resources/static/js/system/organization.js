@@ -93,19 +93,19 @@ layui.config({
     operations.config({
         path: action_path,
         id: 'orgId',
-        commonAddFunc: function () {
+        commonAddFunc: function (data) {
             // 若添加一级组织机构，则刷新组织机构列表树
-            p.init();
+            operations.parentWindow.init();
             // 刷新父页面表格数据
-            p.reload(data.field.orgParentId);
+            operations.parentWindow.reload(data.orgParentId);
         },
         delFunc: function () {
             // 若删除一级组织机构，则刷新组织机构列表树
-            p.init();
+            operations.parentWindow.init();
         },
         updateFunc: function () {
             // 若编辑一级组织机构，则刷新组织机构列表树
-            p.init();
+            operations.parentWindow.init();
         }
     });
 });

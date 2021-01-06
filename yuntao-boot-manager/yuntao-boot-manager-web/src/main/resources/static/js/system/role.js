@@ -78,17 +78,17 @@ layui.config({
         path: action_path,
         commonAddFunc: function () {
             // 若添加角色，则刷新角色列表树
-            p.init();
+            operations.parentWindow.init();
             // 刷新父页面表格数据
-            p.reload();
+            operations.parentWindow.reload();
         },
         delFunc: function () {
             // 若删除角色，则刷新角色列表树
-            p.init();
+            operations.parentWindow.init();
         },
         updateFunc: function () {
             // 若编辑角色，则刷新角色列表树
-            p.init();
+            operations.parentWindow.init();
         }
     });
 

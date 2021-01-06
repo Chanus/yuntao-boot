@@ -155,19 +155,19 @@ layui.config({
     operations.config({
         path: action_path,
         id: 'moduleId',
-        commonAddFunc: function () {
+        commonAddFunc: function (data) {
             // 若添加一级模块，则刷新模块列表树
-            p.init();
+            operations.parentWindow.init();
             // 刷新父页面表格数据
-            p.reload(data.field.moduleParentId);
+            operations.parentWindow.reload(data.moduleParentId);
         },
         delFunc: function () {
             // 若删除一级模块，则刷新模块列表树
-            p.init();
+            operations.parentWindow.init();
         },
         updateFunc: function () {
             // 若编辑一级模块，则刷新模块列表树
-            p.init();
+            operations.parentWindow.init();
         }
     });
 });

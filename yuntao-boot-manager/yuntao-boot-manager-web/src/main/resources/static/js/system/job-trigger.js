@@ -70,14 +70,11 @@ layui.config({
     });
 
     // 增删改
-    var p = $('.layui-layer-content', window.parent.document).children()[0].contentWindow;
     operations.config({
+        windowLevel: 2,
         path: action_path,
-        commonAddFunc: function () {
-            p.reload();
-        },
         updateFunc: function () {
-            p.reload();
+            operations.parentWindow.reload();
         }
     });
 });
