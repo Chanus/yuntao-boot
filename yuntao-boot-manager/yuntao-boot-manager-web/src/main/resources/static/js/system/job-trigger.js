@@ -70,11 +70,5 @@ layui.config({
     });
 
     // 增删改
-    operations.config({
-        windowLevel: 2,
-        path: action_path,
-        updateFunc: function () {
-            operations.parentWindow.reload();
-        }
-    });
+    operations.config({windowLevel: 2, path: action_path});
 });

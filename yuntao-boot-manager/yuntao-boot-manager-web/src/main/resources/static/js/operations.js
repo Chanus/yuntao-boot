@@ -153,7 +153,7 @@ layui.define(['form', 'table'], function (exports) {
                         if (func && typeof func === 'function')
                             func(fields, data);
                         // 刷新父页面表格数据并关闭弹出层
-                        var layuiLaypageBtnClass = p ? $('.layui-laypage-btn', p.document)[0] : false;
+                        var layuiLaypageBtnClass = operations.parentWindow ? $('.layui-laypage-btn', operations.parentWindow.document)[0] : false;
                         if (layuiLaypageBtnClass)
                             layuiLaypageBtnClass.click();
                         parent.layer.close(parent.layer.getFrameIndex(window.name));
