@@ -45,6 +45,11 @@ layui.config({
         reload();
     });
 
+    // 点击取消按钮时触发，关闭弹出层
+    $('#cancel').on('click', function () {
+        parent.layer.close(parent.layer.getFrameIndex(window.name));
+    });
+
     // 监听工具条
     table.on('tool(datas)', function (obj) {
         var data = obj.data; // 获得当前行数据

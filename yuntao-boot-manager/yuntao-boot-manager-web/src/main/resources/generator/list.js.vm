@@ -60,5 +60,5 @@ layui.config({
     });
 
     // 增删改
-    operations.config({path: action_path});
+    operations.config({path: action_path#if($pk.attributename != 'id'), id: '${pk.attributename}'#end});
 });
