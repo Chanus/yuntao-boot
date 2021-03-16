@@ -42,16 +42,22 @@ public class Global {
     public static String copyright;
 
     /**
+     * 系统登录页面，默认 login
+     */
+    public static String loginPage;
+    /**
      * 文件上传路径
      */
     public static String profile;
 
     @Autowired
-    public Global(@Value("${yuntao.name}") String name, @Value("${yuntao.version}") String version,
-                  @Value("${yuntao.copyright}") String copyright, @Value("${yuntao.profile}") String profile) {
+    public Global(@Value("${yuntao.name:}") String name, @Value("${yuntao.version:}") String version,
+                  @Value("${yuntao.copyright:}") String copyright, @Value("${yuntao.login-page:login}") String loginPage,
+                  @Value("${yuntao.profile:}") String profile) {
         Global.name = name;
         Global.version = version;
         Global.copyright = copyright;
+        Global.loginPage = loginPage;
         Global.profile = profile;
     }
 }

@@ -19,6 +19,7 @@ import com.chanus.yuntao.boot.common.constant.Constants;
 import com.chanus.yuntao.boot.common.pojo.LoginUser;
 import com.chanus.yuntao.boot.common.pojo.SessionSave;
 import com.chanus.yuntao.boot.framework.base.controller.BaseController;
+import com.chanus.yuntao.boot.framework.configuration.system.Global;
 import com.chanus.yuntao.boot.manager.annotation.Log;
 import com.chanus.yuntao.boot.manager.common.CacheData;
 import com.chanus.yuntao.boot.manager.common.enums.LogTypeEnum;
@@ -69,7 +70,7 @@ public class LoginController extends BaseController {
     public String login(Model model) {
         model.addAttribute("isCheckVerifyCode", CacheData.SYSTEM_PARAMS_MAP.get("sys_check_verify_code"));
         model.addAttribute("isCheckGoogleAuthenticator", CacheData.SYSTEM_PARAMS_MAP.get("sys_check_google_authenticator"));
-        return "login";
+        return Global.loginPage;
     }
 
     /**
