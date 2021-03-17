@@ -197,7 +197,7 @@ public class LoginController extends BaseController {
         getSession().invalidate();
         model.addAttribute("isCheckVerifyCode", CacheData.SYSTEM_PARAMS_MAP.get("sys_check_verify_code"));
         model.addAttribute("isCheckGoogleAuthenticator", CacheData.SYSTEM_PARAMS_MAP.get("sys_check_google_authenticator"));
-        return "login";
+        return Global.loginPage;
     }
 
     /**
