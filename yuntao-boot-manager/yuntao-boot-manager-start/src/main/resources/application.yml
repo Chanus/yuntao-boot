@@ -6,7 +6,7 @@ spring:
 ---
 yuntao:
   name: 云道管理系统
-  version: 1.1.2
+  version: 1.1.3
   copyright: Copyright © 2020 Yuntao Chanus. All Rights Reserved.
   profile: E:/yuntao
   # 代码生成配置
