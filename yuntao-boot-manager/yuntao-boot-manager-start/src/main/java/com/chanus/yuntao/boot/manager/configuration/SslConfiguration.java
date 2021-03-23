@@ -15,12 +15,14 @@
  */
 package com.chanus.yuntao.boot.manager.configuration;
 
-import org.apache.catalina.Context;
-import org.apache.catalina.connector.Connector;
-import org.apache.tomcat.util.descriptor.web.SecurityCollection;
-import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import io.undertow.servlet.api.SecurityConstraint;
+import io.undertow.servlet.api.SecurityInfo;
+import io.undertow.servlet.api.TransportGuaranteeType;
+import io.undertow.servlet.api.WebResourceCollection;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer;
+import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -43,7 +45,7 @@ public class SslConfiguration {
      *
      * @return
      */
-    @Bean
+    /*@Bean
     public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
         TomcatServletWebServerFactory tomcatFactory = new TomcatServletWebServerFactory() {
             @Override
@@ -65,14 +67,14 @@ public class SslConfiguration {
         tomcatFactory.addAdditionalTomcatConnectors(connector);
 
         return tomcatFactory;
-    }
+    }*/
 
     /**
      * Undertow 服务器配置
      *
      * @return
      */
-    /*@Bean
+    @Bean
     public ServletWebServerFactory undertowFactory() {
         UndertowServletWebServerFactory undertowFactory = new UndertowServletWebServerFactory();
 
@@ -90,5 +92,5 @@ public class SslConfiguration {
         });
 
         return undertowFactory;
-    }*/
+    }
 }
