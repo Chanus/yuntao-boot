@@ -56,7 +56,7 @@ public class RequestInterceptor implements HandlerInterceptor {
             if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
                 response.setCharacterEncoding("UTF-8");
                 response.setHeader("Content-Type", "text/html;charset=UTF-8");
-                response.getWriter().print("{\"code\":2,\"msg\":\"登录超时\"}");
+                response.getWriter().print("{\"code\":401,\"msg\":\"登录超时\"}");
                 return false;
             } else {
                 response.sendRedirect(request.getContextPath() + LOGIN_URL);
@@ -70,7 +70,7 @@ public class RequestInterceptor implements HandlerInterceptor {
         if (CollectionUtils.isEmpty(loginUser.getUrls()) || !loginUser.getUrls().contains(request.getServletPath())) {
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Content-Type", "text/html;charset=UTF-8");
-            response.getWriter().print("{\"code\":3,\"msg\":\"请求URL无效：" + request.getServletPath() + "\"}");
+            response.getWriter().print("{\"code\":404,\"msg\":\"未找到资源：" + request.getServletPath() + "\"}");
             return false;
         }
 
