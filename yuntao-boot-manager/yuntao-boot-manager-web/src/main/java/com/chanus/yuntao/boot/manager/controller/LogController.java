@@ -57,7 +57,7 @@ public class LogController extends BaseController {
     @PostMapping(value = "list", produces = "application/json; charset=utf-8")
     public Page<com.chanus.yuntao.boot.manager.model.Log> list() {
         CustomMap params = getParams();
-        String operateContent = (String) params.get("operateContent");
+        String operateContent = params.getStringValue("operateContent");
         try {
             if (StringUtils.isNotBlank(operateContent))
                 params.put("operateContent", URLDecoder.decode(operateContent, "UTF-8"));

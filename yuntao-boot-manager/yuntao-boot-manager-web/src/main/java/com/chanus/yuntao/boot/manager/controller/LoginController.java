@@ -31,6 +31,7 @@ import com.chanus.yuntao.utils.core.StringUtils;
 import com.chanus.yuntao.utils.core.VerifyCodeUtils;
 import com.chanus.yuntao.utils.core.encrypt.RSAUtils;
 import com.chanus.yuntao.utils.core.lang.Message;
+import com.chanus.yuntao.utils.core.map.CustomMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -130,11 +131,11 @@ public class LoginController extends BaseController {
     @PostMapping(value = "login", produces = "application/json; charset=utf-8")
     public Message login() {
         HttpSession session = getSession();
-        Map<String, Object> params = getParams();
-        String rsaPublicKey = (String) params.get("rsaPublicKey");
+        CustomMap params = getParams();
+        String rsaPublicKey = params.getStringValue("rsaPublicKey");
 
         if ("1".equals(CacheData.SYSTEM_PARAMS_MAP.get("sys_check_verify_code"))) {// 需要验证码校验
-            String verifyCode = (String) params.get("verifyCode");
+            String verifyCode = params.getStringValue("verifyCode");
             String realVerifyCode = (String) session.getAttribute("verifyCode");
 
             if (StringUtils.isBlank(verifyCode)) {
@@ -148,7 +149,7 @@ public class LoginController extends BaseController {
         }
 
         if ("1".equals(CacheData.SYSTEM_PARAMS_MAP.get("sys_check_google_authenticator"))) {// 启用谷歌验证器
-            String googleAuthenticatorCode = (String) params.get("googleAuthenticatorCode");
+            String googleAuthenticatorCode = params.getStringValue("googleAuthenticatorCode");
 
             if (StringUtils.isBlank(googleAuthenticatorCode))
                 return Message.fail("动态验证码不能为空");
@@ -161,9 +162,9 @@ public class LoginController extends BaseController {
                 return Message.fail("动态验证码不正确");
         }
 
-        String loginname = (String) params.get("loginname");
-        String roleCode = (String) params.get("roleCode");
-        String password = (String) params.get("password");
+        String loginname = params.getStringValue("loginname");
+        String roleCode = params.getStringValue("roleCode");
+        String password = params.getStringValue("password");
         try {
             password = RSAUtils.decryptByPrivateKey(password, CacheData.RSA_KEYS_MAP.get(rsaPublicKey));
         } finally {
