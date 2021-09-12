@@ -24,7 +24,6 @@ import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * SSL 配置，http 自动跳转到 https
@@ -33,7 +32,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021-03-23 09:18:39
  * @since 1.1.3
  */
-@Configuration
+// @Configuration
 public class SslConfiguration {
     @Value("${server.http-port:80}")
     private int httpPort;

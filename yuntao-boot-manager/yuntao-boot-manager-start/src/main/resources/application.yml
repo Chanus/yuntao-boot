@@ -6,7 +6,7 @@ spring:
 ---
 yuntao:
   name: 云道管理系统
-  version: 1.1.5
+  version: 1.1.6
   copyright: Copyright © 2020 Yuntao Chanus. All Rights Reserved.
   profile: E:/yuntao
   # 代码生成配置
@@ -31,9 +31,10 @@ yuntao:
 # 服务器配置
 server:
   # 服务端口
-  port: 443
+  #  port: 443
+  port: 8080
   # 自定义声明 http 的端口，启用 SSL 时使用，默认 80
-  http-port: 80
+  #  http-port: 80
   servlet:
     # 应用的访问路径
     context-path: /
@@ -45,11 +46,11 @@ server:
     direct-buffers: true
   http2:
     enabled: true
-  ssl:
-    enabled: true
-    key-store: classpath:ebininfosoft-ssl-key.p12
-    key-store-password: 123456
-    key-store-type: PKCS12
+#  ssl:
+#    enabled: true
+#    key-store: classpath:ebininfosoft-ssl-key.p12
+#    key-store-password: 123456
+#    key-store-type: PKCS12
 #  tomcat:
 #    # tomcat 的 URI 编码
 #    uri-encoding: UTF-8
