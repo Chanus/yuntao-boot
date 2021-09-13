@@ -17,4 +17,9 @@ public class AESKeyConsts {
      * 邮箱账号加密密钥
      */
     public final static String KEY_EMAIL = "PaYStN1AbNUzmynXeLkScg==";
+
+    /**
+     * 邮箱账号加密密钥
+     */
+    public final static String KEY_ACTIVATION = "k3YQ0yo/wCXNS6qed6K7lQ==";
 }

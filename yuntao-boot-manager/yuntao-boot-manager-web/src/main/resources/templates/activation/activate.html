@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:include="public :: header"/>
+  </head>
+  <body>
+    <div class="pd-5">
+      <form class="layui-form layui-form-pane layui-row">
+        <div class="layui-col-md3 layui-col-xs12">&nbsp;</div>
+        <div class="layui-col-md6 layui-col-xs12">
+          <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">激活码</label>
+            <div class="layui-input-block">
+              <textarea name="activationCode" required lay-verify="required" lay-null-msg="请输入激活码" style="height: 500px;" class="layui-textarea"></textarea>
+            </div>
+          </div>
+          <div class="layui-form-item text-c">
+            <div class="layui-inline">
+              <button class="layui-btn layui-btn-normal" lay-submit lay-filter="activate">激活</button>
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <th:block th:include="public :: footer"/>
+    <script>
+        layui.use(['layer', 'form'], function () {
+            var layer = layui.layer, $ = layui.jquery, form = layui.form;
+
+            form.on('submit(activate)', function (data) {
+                var loading = layer.load(0, {shade: [0.2, '#000']});//0.2透明度的白色背景
+
+                $.post(ctx + 'activation/activate', data.field, function (message) {
+                    layer.close(loading);
+                    if (message.code === 0) {
+                        layer.msg(message.msg, {icon: 1, time: 1000}, function () {
+                            location.href = ctx + 'login';
+                        });
+                    } else {
+                        layer.msg(message.msg, {icon: 2, anim: 6, time: 1000});
+                    }
+                });
+
+                return false;
+            });
+        });
+    </script>
+  </body>
+</html>

@@ -40,7 +40,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
@@ -68,10 +70,14 @@ public class LoginController extends BaseController {
      * @return
      */
     @GetMapping(value = "login")
-    public String login(Model model) {
+    public String login(HttpServletRequest request, Model model) {
         model.addAttribute("isCheckVerifyCode", CacheData.SYSTEM_PARAMS_MAP.get("sys_check_verify_code"));
         model.addAttribute("isCheckGoogleAuthenticator", CacheData.SYSTEM_PARAMS_MAP.get("sys_check_google_authenticator"));
-        return Global.loginPage;
+
+        ServletContext servletContext = request.getServletContext();
+        String activationStatus = (String) servletContext.getAttribute("activationStatus");
+
+        return Constants.STATUS_NO.equals(activationStatus) ? "activation/activation" : Global.loginPage;
     }
 
     /**

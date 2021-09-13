@@ -15,12 +15,14 @@
  */
 package com.chanus.yuntao.boot.manager.interceptor;
 
+import com.chanus.yuntao.boot.common.constant.Constants;
 import com.chanus.yuntao.boot.common.pojo.LoginUser;
 import com.chanus.yuntao.utils.core.CollectionUtils;
 import com.chanus.yuntao.utils.core.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -34,6 +36,7 @@ import javax.servlet.http.HttpSession;
  */
 public class RequestInterceptor implements HandlerInterceptor {
     private static final String LOGIN_URL = "/relogin";
+    private static final String ACTIVATION_URL = "/activation";
 
     @Override
     public void afterCompletion(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, Exception arg3) {
@@ -47,6 +50,14 @@ public class RequestInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
+        // 验证系统是否激活
+        ServletContext servletContext = request.getServletContext();
+        String activationStatus = (String) servletContext.getAttribute("activationStatus");
+        if (Constants.STATUS_NO.equals(activationStatus)) {
+            response.sendRedirect(request.getContextPath() + ACTIVATION_URL);
+            return false;
+        }
+
         HttpSession session = request.getSession(true);
         LoginUser loginUser = (LoginUser) session.getAttribute("loginUser");// 登录账号信息
 

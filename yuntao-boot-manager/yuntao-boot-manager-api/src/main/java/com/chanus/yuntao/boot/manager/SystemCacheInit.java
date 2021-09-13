@@ -2,6 +2,7 @@ package com.chanus.yuntao.boot.manager;
 
 import com.chanus.yuntao.boot.framework.configuration.system.Global;
 import com.chanus.yuntao.boot.manager.common.CacheData;
+import com.chanus.yuntao.boot.manager.service.ActivationService;
 import com.chanus.yuntao.boot.manager.service.DictService;
 import com.chanus.yuntao.boot.manager.service.ParamService;
 import com.chanus.yuntao.boot.manager.service.ScheduleJobService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 
 /**
@@ -27,6 +29,8 @@ public class SystemCacheInit {
     @Autowired
     private ScheduleJobService scheduleJobService;
     @Autowired
+    private ActivationService activationService;
+    @Resource
     private ServletContext servletContext;
 
     /**
@@ -37,6 +41,9 @@ public class SystemCacheInit {
         servletContext.setAttribute("system_name", Global.name);
         servletContext.setAttribute("system_version", Global.version);
         servletContext.setAttribute("system_copyright", Global.copyright);
+
+        // 校验系统是否激活
+        activationService.verify();
     }
 
     /**

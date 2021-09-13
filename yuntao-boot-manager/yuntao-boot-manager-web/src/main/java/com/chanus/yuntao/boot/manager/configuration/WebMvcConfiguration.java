@@ -36,6 +36,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/**")// 所有路径都被拦截
                 .excludePathPatterns("/", "/js/**", "/css/**", "/images/**", "/font/**", "/audio/**", "/lib/**",
                         "/json/**", "/theme/**", "/i18n/**", "/upload/**",
-                        "/login", "/relogin", "/rsa-public-key", "/verify-code", "/external/**", "/api/**");
+                        "/login", "/relogin", "/rsa-public-key", "/verify-code", "/external/**", "/api/**", "/activation/**");
     }
 }

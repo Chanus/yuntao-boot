@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="../../static/lib/layui/css/layui.css" th:href="@{/lib/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" href="../../static/lib/layuiadmin/style/admin.css" th:href="@{/lib/layuiadmin/style/admin.css}" media="all">
+    <link rel="shortcut icon" href="../../static/images/favicon.ico" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+    <title>系统激活</title>
+  </head>
+  <body>
+    <div class="layui-fluid">
+      <div class="layadmin-tips">
+        <i class="layui-icon" face>&#xe664;</i>
+        <div class="layui-text" style="font-size: 20px;">
+          系统未激活，请先激活系统  <a  th:href="@{/activation/activate}" style="font-size: 14px;">现在激活</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

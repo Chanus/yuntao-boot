@@ -6,9 +6,9 @@ spring:
 ---
 yuntao:
   name: 云道管理系统
-  version: 1.1.6
+  version: 1.2.0
   copyright: Copyright © 2020 Yuntao Chanus. All Rights Reserved.
-  profile: E:/yuntao
+  profile: /Users/Chanus/Documents/yuntao
   # 代码生成配置
   code:
     # 代码作者
@@ -111,4 +111,4 @@ mybatis-plus:
 logging:
   config: classpath:logback-spring.xml
   file:
-    path: D:/logs/yuntao-manager
+    path: /Users/Chanus/Documents/logs/yuntao-manager

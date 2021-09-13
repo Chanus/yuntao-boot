@@ -3,19 +3,35 @@
 
  Source Server         : MySql
  Source Server Type    : MySQL
- Source Server Version : 50729
+ Source Server Version : 50732
  Source Host           : localhost:3306
  Source Schema         : yuntao-boot
 
  Target Server Type    : MySQL
- Target Server Version : 50729
+ Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 05/01/2021 13:51:44
+ Date: 13/09/2021 21:07:44
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for sys_activation
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_activation`;
+CREATE TABLE `sys_activation` (
+  `activation_key` varchar(500) NOT NULL COMMENT '激活码秘钥',
+  `activation_code` varchar(1000) NOT NULL COMMENT '激活码'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统激活码表';
+
+-- ----------------------------
+-- Records of sys_activation
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_activation` VALUES ('MrT+Uh2Ixxymi7vmd/7rVV8hwzF42puc2cHUy0NU3CRo/RNE8v66YyTFzhguc/FhcVZzGXbj4Hhb0ndYEK/qBbpll3PSEYiUjtuRuR80e195hmvCGVAWO/XnMn0wdWsu2Xd0u7bxK9Eht3KFVae6m+4qA0TADaMG6V+Upya133Dfb/Qj4On+sBkpcIEzSlRpmgPKsIiA6Rg8A9xdKWryx8yrRKS7wlhDDZK4eL3NLV1OWVZr/JgC34Ll1UPhJkzlJ+7+qZczJ/pq75UvBDzkilvBgcrQGICmCFEmYfSkDK0=', 'Rlt1ezax+1sCQQxuRIKQoe7trhtET6stf95jx/fUq2xbIRiQl41EjPxXNTPWD8ev1ZdBgqcWrDtMeBYsl5Ah+iQLAyesVorpvICtBcNGAO9ltScL/3ulTLu3a47TYJQKL32mjwgYfUfcEoJhL4hPSd07mgWcXJuObLu4YYr/4FJU9aveo8p6KzUF8ow6gF1d6O0jXfqwWFQfvO7+A+J2GofzjFPxaKXdPRECuOwJ/0/BOY1j2Gk9CeJ2shYGoI3LZnrCITbwZmeyAPJRXZD0YemYQNBtal6XCspEJ+aASWPiwhApD2QsVPrA1pYy6WFVChM1UIYu0PYi/++ZxwvwOTRYCgN9MKusqxAr8sCPXhfKfkIpVF/3kjR7H9bEIBSEmaG8PvpG6WWPKZ6+p27/5z9ljGeKhSeVl6LnhMpShHlnPd6vxwsooIq78+cZaGiLkH/+zW9AaLjTrWefnp4eQH9No2NTduONBnc2nzvehlsuqDzBm0xkuj3VQbw6Tm2d');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_china_area
